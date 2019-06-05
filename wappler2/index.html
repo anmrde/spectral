@@ -4,6 +4,7 @@
 <title>Untitled Document</title>
   <script src="dmxAppConnect/dmxAppConnect.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.5.1.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -13,16 +14,61 @@
     <div class="container wappler-block">
       <div class="row">
         <div class="col-12 col-xl col-lg col-md col-sm">
-          <div class="ratio-square"><iframe class="ratio-inner" src="https://sketchfab.com/models/fb43aced2ee14e1db1f4acb7638d352e/embed?autospin=0.2&amp;autostart=1&amp;preload=1&amp;ui_infos=0" frameborder="0" allow="autoplay; fullscreen; vr" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-          </div></div>
+          <div class="ratio-square">
+            <!-- Insert an empty iframe -->
+    <iframe class="ratio-inner" src="" id="api-frame" allow="autoplay; fullscreen; vr" allowvr="" allowfullscreen="" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+          </div>
+        </div>
         <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-xl-2 col-lg-3 col-md-3 col-sm-4">
           <h1>Rotating Earth</h1>
           <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
-          <button class="btn">texture1</button>
+          <button class="btn" onclick="myFunction()">texture1</button>
           <button class="btn">texture2</button>
         </div>
       </div>
     </div>
+
+    <!-- Initialize the viewer -->
+    <script type="text/javascript">
+    var iframe = document.getElementById( 'api-frame' );
+    var uid = 'fb43aced2ee14e1db1f4acb7638d352e';
+
+    // By default, the latest version of the viewer API will be used.
+    var client = new Sketchfab( iframe );
+    var _api;
+
+    // Alternatively, you can request a specific version.
+    // var client = new Sketchfab( '1.5.1', iframe );
+
+    client.init( uid, {
+        success: function onSuccess( api ){
+            _api = api;
+            api.start();
+            api.addEventListener( 'viewerready', function() {
+
+                // API is ready to use
+                // Insert your code here
+                console.log( 'Viewer is ready' );
+
+            } );
+        },
+        error: function onError() {
+            console.log( 'Viewer error' );
+        }
+    } );
+function myFunction() {
+  _api.getTextureList(function(err, textures) {
+    console.log(textures);
+});
+  var textureToUpdate = textures[0];
+  api.updateTexture('https://example.org/texture.png', textureToUpdate, function(
+    err,
+    textureUid
+) {
+    console.log('replaced texture with uid: ' + textureUid);
+});
+}
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body></html>
