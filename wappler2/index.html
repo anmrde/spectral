@@ -22,8 +22,8 @@
         <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-xl-2 col-lg-3 col-md-3 col-sm-4">
           <h1>Rotating Earth</h1>
           <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
-          <button class="btn" onclick="myFunction()">texture1</button>
-          <button class="btn">texture2</button>
+          <button class="btn" id="texture1">texture1</button>
+          <button class="btn" id="texture2">texture2</button>
         </div>
       </div>
     </div>
@@ -35,7 +35,12 @@
 
     // By default, the latest version of the viewer API will be used.
     var client = new Sketchfab( iframe );
-    var _api;
+    var myMaterials;
+
+    var error = function() {
+        console.error('Sketchfab API error');
+    };
+
 
     // Alternatively, you can request a specific version.
     // var client = new Sketchfab( '1.5.1', iframe );
@@ -47,7 +52,37 @@
             api.addEventListener( 'viewerready', function() {
 
                 // API is ready to use
-                // Insert your code here
+            api.getMaterialList(function(err, materials) {
+                myMaterials = materials;
+              	console.log(materials);
+            });
+
+            function makeMyModelBlue() {
+                var m = myMaterials[0];
+                // here change only the channel you need to change
+                m.channels.EmitColor.factor = 1;
+                m.channels.EmitColor.enable = true;
+                m.channels.EmitColor.color = [0.0, 0.0, 1.0];
+                api.setMaterial(m);
+            }
+
+            document.getElementById('texture1').addEventListener('click', function() {
+                makeMyModelBlue();
+            });
+
+            function makeMyModelTextured() {
+                var url = 'https://media.sketchfab.com/urls/7w7pAfrCfjovwykkEeRFLGw5SXS/dist/textures/24ae87ff02fe47e296d09175f86dc16a/0172db054ca945b0a95b35f9e6364a77.png';
+
+                var m = myMaterials[1];
+                m.channels.AlbedoPBR.factor = 0;
+              	api.setMaterial(m);
+              	console.log('makeMyModelTextured finished!');
+            }
+
+            document.getElementById('texture2').addEventListener('click', function() {
+                makeMyModelTextured();
+            });
+
                 console.log( 'Viewer is ready' );
 
             } );
@@ -56,18 +91,6 @@
             console.log( 'Viewer error' );
         }
     } );
-function myFunction() {
-  _api.getTextureList(function(err, textures) {
-    console.log(textures);
-});
-  var textureToUpdate = textures[0];
-  api.updateTexture('https://example.org/texture.png', textureToUpdate, function(
-    err,
-    textureUid
-) {
-    console.log('replaced texture with uid: ' + textureUid);
-});
-}
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
