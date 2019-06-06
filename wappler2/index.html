@@ -1,7 +1,7 @@
 <!doctype html>
 <html><head>
 <meta charset="UTF-8">
-<title>Untitled Document</title>
+<title>The Earth</title>
   <script src="dmxAppConnect/dmxAppConnect.js"></script>
   <script src="js/jquery-3.3.1.slim.min.js"></script>
   <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.5.1.js"></script>
@@ -25,10 +25,8 @@
           </div>
         </div>
         <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-xl-2 col-lg-3 col-md-12 col-sm-12">
-          <div><h1>Rotating Earth</h1>
+          <div><h1>The Earth</h1>
           <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
-            <input id="zonalSlider">
-            <input id="totalSlider">
 
           </div>
           <div>
@@ -41,7 +39,7 @@
     <!-- Initialize the viewer -->
     <script type="text/javascript">
       // Sketchfab Viewer API: Change Texture/material
-      var uid = '928a81dbfcbc4944a5ecac27f820c6ca';//'fb43aced2ee14e1db1f4acb7638d352e';
+      var uid = 'fb43aced2ee14e1db1f4acb7638d352e';
       var iframe = document.getElementById('api-frame');
       var client = new window.Sketchfab(iframe);
       var myMaterials;
@@ -74,8 +72,6 @@
                 }
             }
 
-var zonalSlider = $("#zonalSlider").slider({min: 0, max: 10, step: 1, value: 6, prefix:'m=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function(val){ return val*val;}});
-      var totalSlider = $("#totalSlider").slider({min: 0, max: 10, step: 1, value: 9, prefix:'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return val;}, onChangeEnd: function(val){loadTexture('https://anmrde.github.io/spectral/albedo.jpg');console.log('touched slider with value m='+zonalSlider.value+' n='+totalSlider.value);}});
         });
     });
 };
