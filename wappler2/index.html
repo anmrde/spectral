@@ -1,7 +1,7 @@
 <!doctype html>
 <html><head>
 <meta charset="UTF-8">
-<title>The Earth</title>
+<title>Truncation</title>
   <script src="dmxAppConnect/dmxAppConnect.js"></script>
   <script src="js/jquery-3.3.1.slim.min.js"></script>
   <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.5.1.js"></script>
@@ -25,8 +25,9 @@
           </div>
         </div>
         <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-xl-2 col-lg-3 col-md-12 col-sm-12">
-          <div><h1>The Earth</h1>
+          <div><h1>Truncation</h1>
           <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
+            <input id="trcSlider">
 
           </div>
           <div>
@@ -38,8 +39,26 @@
     </div>
     <!-- Initialize the viewer -->
     <script type="text/javascript">
+      function idx2trc(idx) {
+        var trc = 0;
+        if (idx == 0) {
+          trc = 0;
+        } else if (idx < 8) {
+          trc = Math.pow(2,(idx-1));
+        } else if (idx == 8) {
+          trc = 159;
+        } else if (idx == 9) {
+          trc = 399;
+        } else if (idx == 10) {
+          trc = 639;
+        } else if (idx == 11) {
+          trc = 1279;
+        }
+        return trc;
+      }
+      var oldval = 0;
       // Sketchfab Viewer API: Change Texture/material
-      var uid = 'fb43aced2ee14e1db1f4acb7638d352e';
+      var uid = '928a81dbfcbc4944a5ecac27f820c6ca';//'fb43aced2ee14e1db1f4acb7638d352e';
       var iframe = document.getElementById('api-frame');
       var client = new window.Sketchfab(iframe);
       var myMaterials;
@@ -57,21 +76,22 @@
               console.log(textures);
             });
 
-            function loadTexture(url) {
+            function loadTexture(file) {
                 //var url = 'https://anmrde.github.io/spectral/t399.png';
                    //'https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg'; 
               //'https://media.sketchfab.com/urls/7w7pAfrCfjovwykkEeRFLGw5SXS/dist/textures/24ae87ff02fe47e296d09175f86dc16a/0172db054ca945b0a95b35f9e6364a77.png';
-
+				var url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
                 for (var i = 0; i < myMaterials.length; i++) {
                     var m = myMaterials[i];
                   	if(m.name == 'earth') {
-                        api.updateTexture(url, m.channels.DiffusePBR.texture.uid, function(/*e, uid*/) {
-                            api.setMaterial(m);
-                        });
+                        api.updateTexture(url+file, m.channels.DiffusePBR.texture.uid, function(/*e, uid*/) {});
+                        api.updateTexture(url+'ocean'+file, m.channels.SpecularPBR.texture.uid, function(/*e, uid*/) {});
+                      	api.setMaterial(m);
                     }
                 }
             }
 
+      var trcSlider = $("#trcSlider").slider({min: 0, max: 11, step: 1, value: 0, prefix:'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return idx2trc(val);}, onChange: function(val){if(trcSlider.value != oldval) {loadTexture('T'+idx2trc(trcSlider.value)+'.png'); oldval = trcSlider.value;}}, onChangeEnd: function(val){loadTexture('T'+idx2trc(trcSlider.value)+'.png');}});
         });
     });
 };
