@@ -3,13 +3,15 @@
 <meta charset="UTF-8">
 <title>Untitled Document</title>
   <script src="dmxAppConnect/dmxAppConnect.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="js/jquery-3.3.1.slim.min.js"></script>
   <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.5.1.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="style.sass">
+<link rel="stylesheet" href="css/jquery.xslider.css">
+<script src="js/jquery.xslider.js"></script>
   </head>
   <body is="dmx-app" id="index">
     <div class="container wappler-block">
@@ -21,27 +23,26 @@
           </div>
         </div>
         <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-xl-2 col-lg-3 col-md-12 col-sm-12">
-          <h1>Rotating Earth</h1>
+          <div><h1>Rotating Earth</h1>
           <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
-          <div>          <div class="flight-types">
-  <input type="radio" name="flight-type" value="coach" id="coach">
-  <label for="coach">
-      Coach
-  </label>
-  <input type="radio" name="flight-type" value="business" id="business" checked>
-  <label for="business">
-      Business
-  </label>
-  <input type="radio" name="flight-type" value="first" id="first">
-  <label for="first">
-      First
-  </label>
-  <input type="radio" name="flight-type" value="blah" id="blah">
-  <label for="blah">
-      First
-  </label>
+	<div id="demo1" style="height: 30px; margin-bottom: 10px;"></div>
+
+	<script>
+		$('#demo1').XSlider({
+			min: 0,
+			max: 10,
+			value: 5
+		});
+	</script>
+<input type="range" value="25">
+    Volume
+    <input type="range" value="25">
+
+          </div>
+          <div>
 </div>
-</div>
+          <div>
+          </div>
         </div>
       </div>
     </div>
