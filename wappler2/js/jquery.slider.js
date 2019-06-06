@@ -1,3 +1,4 @@
+// modified version of the slider from https://github.com/dahjson/jquery-slider
 "use strict";
 var _createClass = function() {
     function i(t, s) {
@@ -93,11 +94,11 @@ function _classCallCheck(t, s) {
             }).on("mouseup touchend", function(t) {
                 e.dragging && (t.preventDefault(), e.dragging = !1, e.bubbleState(!1));
                 s.onChangeEnd(e.value);
-            }), this.minus.on("click", function(t) {
+            }), this.minus.on("mousedown touchstart", function(t) {
                 t.preventDefault();
                 var s = e.value - e.step;
                 s = Math.max(e.min, s), e.setValue(s), e.positionThumb(s)
-            }), this.plus.on("click", function(t) {
+            }), this.plus.on("mousedown touchstart", function(t) {
                 t.preventDefault();
                 var s = e.value + e.step;
                 s = Math.min(e.max, s), e.setValue(s), e.positionThumb(s)
