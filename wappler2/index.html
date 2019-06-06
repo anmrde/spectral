@@ -27,11 +27,10 @@
         <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-xl-2 col-lg-3 col-md-12 col-sm-12">
           <div><h1>Rotating Earth</h1>
           <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
-            <input id="example">
-<script>$("#example").slider({min: 1, max: 10, prefix:'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00'});</script>
-	<div id="zonalSlider" style="height: 30px; margin-bottom: 10px;"></div>
-
-	<div id="totalSlider" style="height: 30px; margin-bottom: 10px;"></div>
+            <input id="zonalSlider">
+<script>$("#zonalSlider").slider({min: 1, max: 10, prefix:'m=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function(val){ return val*val;}});</script>
+            <input id="totalSlider">
+<script>$("#totalSlider").slider({min: 1, max: 10, prefix:'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return val;}});</script>
 
           </div>
           <div>
