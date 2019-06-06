@@ -39,6 +39,7 @@ function _classCallCheck(t, s) {
                 this.thumbFontColor = this.element.data("thumb-font-color") || s.thumbFontColor, 
                 this.trackScale = this.element.data("track-scale") || s.trackScale, 
                 this.trackColor = this.element.data("track-color") || s.trackColor, 
+                this.onChange = this.element.data("on-change") || s.onChange, 
                 this.onChangeEnd = this.element.data("on-change-end") || s.onChangeEnd, 
                 this.element.hide(), this.min = parseFloat(this.removeCommas(this.min)), 
                 this.max = parseFloat(this.removeCommas(this.max)), 
@@ -90,7 +91,8 @@ function _classCallCheck(t, s) {
             this.bubbleColor && (this.bubbleArrow.css("background", this.bubbleColor), this.bubble.css("background", this.bubbleColor)), this.bubbleFontColor && this.bubbleSpan.css("color", this.bubbleFontColor), this.thumbColor && (this.minus.css("color", this.thumbColor), this.plus.css("color", this.thumbColor), this.thumb.css("background", this.thumbColor)), this.thumbFontColor && this.thumbSpan.css("color", this.thumbFontColor), this.trackColor && (this.minus.css("border-color", this.trackColor), this.plus.css("border-color", this.trackColor), this.track.css("background", this.trackColor)), this.dragging = !1, this.thumbOffset = this.thumb.outerWidth() / 2, this.setValue(this.value), this.positionThumb(this.value), this.toggleBubble && this.value.toString().length <= this.toggleLimit ? (this.bubble.hide(), this.thumbSpan.show()) : this.thumbSpan.hide(), this.thumb.css("-ms-touch-action", "none"), this.thumb.on("mousedown touchstart", function(t) {
                 e.dragging || (t.preventDefault(), e.dragging = !0, e.bubbleState(!0))
             }), l("html").on("mousemove touchmove", function(t) {
-                e.dragging && (t.preventDefault(), "touchmove" === t.type ? e.dragThumb(t.originalEvent.touches[0].pageX) : e.dragThumb(t.originalEvent.pageX))
+                e.dragging && (t.preventDefault(), "touchmove" === t.type ? e.dragThumb(t.originalEvent.touches[0].pageX) : e.dragThumb(t.originalEvent.pageX));
+                s.onChange(e.value);
             }).on("mouseup touchend", function(t) {
                 e.dragging && (t.preventDefault(), e.dragging = !1, e.bubbleState(!1));
                 s.onChangeEnd(e.value);
@@ -182,6 +184,7 @@ function _classCallCheck(t, s) {
             thumbFontColor: "",
             trackScale: 1,
             trackColor: "",
+            onChange(val){},
             onChangeEnd(val){}
         }, l.fn.slider.defaults, t);
         return new e(l(this), s)
