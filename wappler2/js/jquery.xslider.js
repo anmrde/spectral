@@ -27,14 +27,14 @@ class XSlider {
 			step: 1,						// 移动步长
 			width: '',						// 宽度，默认自适应 el dom 容器宽度
 			height: '',						// 宽度，默认自适应 el dom 容器高度
-			className: '',					// 用户自定义样式, 内置了一个 mobile 样式
+			className: 'mobile',			// 用户自定义样式, 内置了一个 mobile 样式
 
 			isVertical: false,				// 是否是垂直
 
 			handleAutoSize: true,			// 滑块尺寸随数据量自动变化
-			handleAutoSizeMin: 10,			// 滑块最小尺寸，仅在 handleAutoSize = true 时有效
-			handleWidth: 10,				// 滑块宽度
-			handleHeight: 10,				// 滑块高度
+			handleAutoSizeMin: 20,			// 滑块最小尺寸，仅在 handleAutoSize = true 时有效
+			handleWidth: 20,				// 滑块宽度
+			handleHeight: 20,				// 滑块高度
 			handleWrapperSideStart: 0,		// 滑块容器起始距离
 			handleWrapperSideEnd: 0,		// 滑块容器结束距离
 			bgSideStart: 0,					// 背景容器起始距离
