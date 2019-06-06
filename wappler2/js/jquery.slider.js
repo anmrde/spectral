@@ -18,7 +18,46 @@ function _classCallCheck(t, s) {
     var e = function() {
         function a(t, s) {
             var e = this;
-            if (_classCallCheck(this, a), this.element = t, this.min = this.element.attr("min") || s.min, this.max = this.element.attr("max") || s.max, this.step = this.element.attr("step") || s.step, this.value = this.element.attr("value") || (s.max - s.min) / 2 + s.min, this.decimals = this.element.data("decimals") || s.decimals, this.prefix = this.element.data("prefix") || s.prefix, this.postfix = this.element.data("postfix") || s.postfix, this.toggleBubble = this.element.data("toggle-bubble") || s.toggleBubble, this.toggleLimit = this.element.data("toggle-limit") || s.toggleLimit, this.bubbleColor = this.element.data("bubble-color") || s.bubbleColor, this.bubbleFontScale = this.element.data("bubble-font-scale") || s.bubbleFontScale, this.bubbleFontColor = this.element.data("bubble-font-color") || s.bubbleFontColor, this.bubbleFormat = this.element.data("bubble-format") || s.bubbleFormat, this.thumbScale = this.element.data("thumb-scale") || s.thumbScale, this.thumbColor = this.element.data("thumb-color") || s.thumbColor, this.thumbFontScale = this.element.data("thumb-font-scale") || s.thumbFontScale, this.thumbFontColor = this.element.data("thumb-font-color") || s.thumbFontColor, this.trackScale = this.element.data("track-scale") || s.trackScale, this.trackColor = this.element.data("track-color") || s.trackColor, this.element.hide(), this.min = parseFloat(this.removeCommas(this.min)), this.max = parseFloat(this.removeCommas(this.max)), this.step = parseFloat(this.removeCommas(this.step)), this.value = parseFloat(this.removeCommas(this.value)), this.decimals = parseFloat(this.removeCommas(this.decimals)), this.toggleLimit = parseFloat(this.removeCommas(this.toggleLimit)), this.bubbleFontScale = parseFloat(this.removeCommas(this.bubbleFontScale)), this.thumbScale = parseFloat(this.removeCommas(this.thumbScale)), this.thumbFontScale = parseFloat(this.removeCommas(this.thumbFontScale)), this.trackScale = parseFloat(this.removeCommas(this.trackScale)), this.slider = l("<div>").addClass("jquery-slider__wrap").insertAfter(this.element), this.minus = l("<div><span>-</span></div>").addClass("jquery-slider__minus").appendTo(this.slider), this.plus = l("<div><span>+</span></div>").addClass("jquery-slider__plus").appendTo(this.slider), this.track = l("<div>").addClass("jquery-slider__track").appendTo(this.slider), this.thumb = l("<div><span>").addClass("jquery-slider__thumb").appendTo(this.track), this.bubble = l("<div><span>").addClass("jquery-slider__bubble").appendTo(this.thumb), this.bubbleArrow = l("<div>").addClass("jquery-slider__bubble-arrow").prependTo(this.bubble), this.thumbSpan = this.thumb.find("span").first(), this.bubbleSpan = this.bubble.find("span").first(), 1 !== this.bubbleFontScale && (this.bubble.css({
+            if (_classCallCheck(this, a), this.element = t, 
+                this.min = this.element.attr("min") || s.min, 
+                this.max = this.element.attr("max") || s.max, 
+                this.step = this.element.attr("step") || s.step, 
+                this.value = this.element.attr("value") || (s.max - s.min) / 2 + s.min, 
+                this.decimals = this.element.data("decimals") || s.decimals, 
+                this.prefix = this.element.data("prefix") || s.prefix, 
+                this.postfix = this.element.data("postfix") || s.postfix, 
+                this.toggleBubble = this.element.data("toggle-bubble") || s.toggleBubble, 
+                this.toggleLimit = this.element.data("toggle-limit") || s.toggleLimit, 
+                this.bubbleColor = this.element.data("bubble-color") || s.bubbleColor, 
+                this.bubbleFontScale = this.element.data("bubble-font-scale") || s.bubbleFontScale, 
+                this.bubbleFontColor = this.element.data("bubble-font-color") || s.bubbleFontColor, 
+                this.bubbleFormat = this.element.data("bubble-format") || s.bubbleFormat, 
+                this.thumbScale = this.element.data("thumb-scale") || s.thumbScale, 
+                this.thumbColor = this.element.data("thumb-color") || s.thumbColor, 
+                this.thumbFontScale = this.element.data("thumb-font-scale") || s.thumbFontScale, 
+                this.thumbFontColor = this.element.data("thumb-font-color") || s.thumbFontColor, 
+                this.trackScale = this.element.data("track-scale") || s.trackScale, 
+                this.trackColor = this.element.data("track-color") || s.trackColor, 
+                this.onChangeEnd = this.element.data("on-change-end") || s.onChangeEnd, 
+                this.element.hide(), this.min = parseFloat(this.removeCommas(this.min)), 
+                this.max = parseFloat(this.removeCommas(this.max)), 
+                this.step = parseFloat(this.removeCommas(this.step)), 
+                this.value = parseFloat(this.removeCommas(this.value)), 
+                this.decimals = parseFloat(this.removeCommas(this.decimals)), 
+                this.toggleLimit = parseFloat(this.removeCommas(this.toggleLimit)), 
+                this.bubbleFontScale = parseFloat(this.removeCommas(this.bubbleFontScale)), 
+                this.thumbScale = parseFloat(this.removeCommas(this.thumbScale)), 
+                this.thumbFontScale = parseFloat(this.removeCommas(this.thumbFontScale)), 
+                this.trackScale = parseFloat(this.removeCommas(this.trackScale)), 
+                this.slider = l("<div>").addClass("jquery-slider__wrap").insertAfter(this.element), 
+                this.minus = l("<div><span>-</span></div>").addClass("jquery-slider__minus").appendTo(this.slider), 
+                this.plus = l("<div><span>+</span></div>").addClass("jquery-slider__plus").appendTo(this.slider), 
+                this.track = l("<div>").addClass("jquery-slider__track").appendTo(this.slider), 
+                this.thumb = l("<div><span>").addClass("jquery-slider__thumb").appendTo(this.track), 
+                this.bubble = l("<div><span>").addClass("jquery-slider__bubble").appendTo(this.thumb), 
+                this.bubbleArrow = l("<div>").addClass("jquery-slider__bubble-arrow").prependTo(this.bubble), 
+                this.thumbSpan = this.thumb.find("span").first(), 
+                this.bubbleSpan = this.bubble.find("span").first(), 1 !== this.bubbleFontScale && (this.bubble.css({
                     "font-size": parseFloat(this.bubble.css("font-size")) * this.bubbleFontScale + "px",
                     "border-radius": parseFloat(this.bubble.css("border-radius")) * this.bubbleFontScale + "px"
                 }), this.bubbleArrow.css({
@@ -52,7 +91,8 @@ function _classCallCheck(t, s) {
             }), l("html").on("mousemove touchmove", function(t) {
                 e.dragging && (t.preventDefault(), "touchmove" === t.type ? e.dragThumb(t.originalEvent.touches[0].pageX) : e.dragThumb(t.originalEvent.pageX))
             }).on("mouseup touchend", function(t) {
-                e.dragging && (t.preventDefault(), e.dragging = !1, e.bubbleState(!1))
+                e.dragging && (t.preventDefault(), e.dragging = !1, e.bubbleState(!1));
+                s.onChangeEnd(e.value);
             }), this.minus.on("click", function(t) {
                 t.preventDefault();
                 var s = e.value - e.step;
@@ -140,7 +180,8 @@ function _classCallCheck(t, s) {
             thumbFontScale: 1,
             thumbFontColor: "",
             trackScale: 1,
-            trackColor: ""
+            trackColor: "",
+            onChangeEnd(val){}
         }, l.fn.slider.defaults, t);
         return new e(l(this), s)
     }, l(function() {
