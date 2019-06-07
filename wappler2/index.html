@@ -10,34 +10,112 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="style.sass">
+  <link rel="stylesheet" href="css/fullpage.css">
 <link rel="stylesheet" href="css/jquery.xslider.css">
 <link href="css/jquery.slider.css" rel="stylesheet">
   <script src="js/jquery.xslider.js"></script>
   <script src="js/jquery.slider.js"></script>
+  <script src="js/fullpage.js"></script>
+  <script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
+  <script src="dmxAppConnect/dmxBootstrap4Collapse/dmxBootstrap4Collapse.js" defer=""></script>
   </head>
   <body is="dmx-app" id="index">
     <div class="container wappler-block">
       <div class="row">
-        <div class="col-12 col-xl col-lg col-md-12 col-sm-12">
+        <div class="col-12 col-xl col-lg col-md-12 col-sm-12 undefined-NaN col-xl-9">
           <div class="ratio-square">
             <!-- Insert an empty iframe -->
             <iframe class="ratio-inner" src="" id="api-frame" allow="autoplay; fullscreen; vr" allowvr="" allowfullscreen="" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
           </div>
         </div>
-        <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-xl-2 col-lg-3 col-md-12 col-sm-12">
-          <div><h1>Truncation</h1>
+        <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-lg-3 col-md-12 col-sm-12 col-xl-3">
+          <div>
+            <div class="container text-sm-left">
+              <ul class="nav nav-tabs" id="myTab" role="tablist" style="display: none;">
+                <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <h1 class="mt-3">Welcome!</h1>
+          <p>This is a short interactive training about the spectral transform method. Throughout the entire course you will see an interactive earth. You can always rotate it and zoom in and out. Many of the exercises will allow you to display data on this interactive globe. Please familiarise yourself with rotating and zooming.</p>
+            <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Start</button>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <h1 class="mt-3">Truncation</h1>
           <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
             <input id="trcSlider">
 
+            <div class="custom-control custom-switch">
+              <input class="custom-control-input" type="checkbox" value="" id="checkbox2" name="checkbox1">
+              </div>
+            <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+            <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
           </div>
-          <div>
-</div>
-          <div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+          <h1 class="mt-3">Tab Contact</h1>
+          <p>ugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+        </div>
+      </div>
+    </div>      <!-- /.container -->
+
           </div>
         </div>
       </div>
     </div>
     <!-- Initialize the viewer -->
+    <script type="text/javascript">
+      /* -------------------------------------------------------------
+            bootstrapTabControl
+        ------------------------------------------------------------- */
+        function bootstrapTabControl(){
+            var i, items = $('.nav-link'), pane = $('.tab-pane');
+            // next
+            $('.nexttab').on('click', function(){
+                for(i = 0; i < items.length; i++){
+                    if($(items[i]).hasClass('active') == true){
+                        break;
+                    }
+                }
+                if(i < items.length - 1){
+                    // for tab
+                    $(items[i]).removeClass('active');
+                    $(items[i+1]).addClass('active');
+                    // for pane
+                    $(pane[i]).removeClass('show active');
+                    $(pane[i+1]).addClass('show active');
+                }
+
+            });
+            // Prev
+            $('.prevtab').on('click', function(){
+                for(i = 0; i < items.length; i++){
+                    if($(items[i]).hasClass('active') == true){
+                        break;
+                    }
+                }
+                if(i != 0){
+                    // for tab
+                    $(items[i]).removeClass('active');
+                    $(items[i-1]).addClass('active');
+                    // for pane
+                    $(pane[i]).removeClass('show active');
+                    $(pane[i-1]).addClass('show active');
+                }
+            });
+        }
+        bootstrapTabControl();
+    </script>
+
     <script type="text/javascript">
       function idx2trc(idx) {
         var trc = 0;
@@ -91,7 +169,7 @@
                 }
             }
 
-      var trcSlider = $("#trcSlider").slider({min: 0, max: 11, step: 1, value: 0, prefix:'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return idx2trc(val);}, onChange: function(val){if(trcSlider.value != oldval) {loadTexture('T'+idx2trc(trcSlider.value)+'.png'); oldval = trcSlider.value;}}, onChangeEnd: function(val){loadTexture('T'+idx2trc(trcSlider.value)+'.png');}});
+      var trcSlider = $("#trcSlider").slider({min: 0, max: 11, step: 1, value: 0, prefix:'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return idx2trc(val);}, onChangeEnd: function(val){loadTexture('T'+idx2trc(trcSlider.value)+'.png');}});
         });
     });
 };
