@@ -25,7 +25,7 @@
         <div class="col-12 col-xl col-lg col-md-12 col-sm-12 undefined-NaN col-xl-9">
           <div class="ratio-square">
             <!-- Insert an empty iframe -->
-            <iframe class="ratio-inner" src="" id="api-frame" allow="autoplay; fullscreen; vr" allowvr="" allowfullscreen="" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+            <iframe class="ratio-inner" id="api-frame" allow="autoplay; fullscreen; vr" allowvr="" allowfullscreen="" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
           </div>
         </div>
         <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-lg-3 col-md-12 col-sm-12 col-xl-3">
@@ -33,24 +33,38 @@
             <div class="container text-sm-left">
               <ul class="nav nav-tabs" id="myTab" role="tablist" style="display: none;">
                 <li class="nav-item">
-          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#welcome" role="tab" aria-controls="welcome" aria-selected="true">Welcome</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" id="harmonics-tab" data-toggle="tab" href="#harmonics" role="tab" aria-controls="harmonics" aria-selected="false">Spherical Harmonics</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#truncation" role="tab" aria-controls="truncation" aria-selected="false">Truncation</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#congrats" role="tab" aria-controls="congrats" aria-selected="false">Well done!</a>
         </li>
       </ul>
       <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="tab-pane fade show active" id="welcome" role="tabpanel" aria-labelledby="welcome-tab">
           <h1 class="mt-3">Welcome!</h1>
-          <p>This is a short interactive training about the spectral transform method. Throughout the entire course you will see an interactive earth. You can always rotate it and zoom in and out. Many of the exercises will allow you to display data on this interactive globe. Please familiarise yourself with rotating and zooming.</p>
+          <!-- mobile contents -->
+          <p class="d-lg-none text-lg-left">This is a short interactive training about the spectral transform method. Throughout the entire course you will see above an interactive globe. You can always rotate it and zoom in and out. Many of the exercises will allow you to display data on this interactive globe. Please familiarise yourself with rotating and zooming.</p>
+          <!-- desktop contents -->
+          <p class="d-none d-lg-block text-lg-left">This is a short interactive training about the spectral transform method. Throughout the entire course you will see an interactive globe on the left side. You can always rotate it and zoom in and out. Many of the exercises will allow you to display data on this interactive globe. Please familiarise yourself with rotating and zooming.</p>
             <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Start</button>
         </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-          <h1 class="mt-3">Truncation</h1>
+        <div class="tab-pane fade" id="harmonics" role="tabpanel" aria-labelledby="harmonics-tab">
+          <h1 class="mt-3">Spherical Harmonics</h1>
           <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
+            <input id="zonalSlider">
+            <input id="totalSlider">
+            <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+            <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+        </div>
+        <div class="tab-pane fade" id="truncation" role="tabpanel" aria-labelledby="truncation-tab">
+          <h1 class="mt-3">Truncation</h1>
+          <p>The truncation is the highest zonal or total wavenumber that we use. To demonstrate the impact of truncation on a familiar field the globe shows now the orography (height above sea level). This orography was obtained from the spectral field used operationally in IFS. The slider below allows you to change the truncation of this spectral field. Which truncation is necessary to recognise the your home continent?</p>
             <input id="trcSlider">
 
             <div class="custom-control custom-switch">
@@ -59,10 +73,9 @@
             <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
             <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
           </div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-          <h1 class="mt-3">Tab Contact</h1>
-          <p>ugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="tab-pane fade" id="congrats" role="tabpanel" aria-labelledby="congrats-tab">
+          <h1 class="mt-3">Well done!</h1>
+          <p>Congratulations! You finished these exercises about the spectral transform method. Feel free to go back or take a look at the following recent paper which describes some of the computational challenges of the spectral transform method: <a href="https://doi.org/10.5194/gmd-2018-304">The ESCAPE project</a></p>
             <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
         </div>
       </div>
@@ -74,6 +87,16 @@
     </div>
     <!-- Initialize the viewer -->
     <script type="text/javascript">
+      var event = new Event('checkViewer');
+      function currentPage(){
+        var i, items = $('.nav-link');
+        for(i = 0; i < items.length; i++){
+                    if($(items[i]).hasClass('active') == true){
+                        break;
+                    }
+                }
+        return i;
+      }
       /* -------------------------------------------------------------
             bootstrapTabControl
         ------------------------------------------------------------- */
@@ -81,11 +104,7 @@
             var i, items = $('.nav-link'), pane = $('.tab-pane');
             // next
             $('.nexttab').on('click', function(){
-                for(i = 0; i < items.length; i++){
-                    if($(items[i]).hasClass('active') == true){
-                        break;
-                    }
-                }
+                i = currentPage();
                 if(i < items.length - 1){
                     // for tab
                     $(items[i]).removeClass('active');
@@ -93,16 +112,13 @@
                     // for pane
                     $(pane[i]).removeClass('show active');
                     $(pane[i+1]).addClass('show active');
+                  	document.dispatchEvent(event);
                 }
 
             });
             // Prev
             $('.prevtab').on('click', function(){
-                for(i = 0; i < items.length; i++){
-                    if($(items[i]).hasClass('active') == true){
-                        break;
-                    }
-                }
+                i = currentPage();
                 if(i != 0){
                     // for tab
                     $(items[i]).removeClass('active');
@@ -110,13 +126,12 @@
                     // for pane
                     $(pane[i]).removeClass('show active');
                     $(pane[i-1]).addClass('show active');
+                  	document.dispatchEvent(event);
                 }
             });
         }
         bootstrapTabControl();
-    </script>
 
-    <script type="text/javascript">
       function idx2trc(idx) {
         var trc = 0;
         if (idx == 0) {
@@ -134,7 +149,25 @@
         }
         return trc;
       }
-      var oldval = 0;
+      function pageCategory(p) {
+        var c = -1;
+        if (p==0 || p==3) {
+          c = 0; // satellite image
+        } else if (p==1) {
+          c = 1; // spherical harmonics
+        } else if (p==2) {
+          c = 2; // orography truncation
+        }
+        return c;
+      }
+      var oldpage = -1;
+      var oldtrc = -1;
+      var oldm = -1;
+      var oldn = -1;
+      var zonalSlider = $("#zonalSlider").slider({min: 0, max: 10, step: 1, value: 6, prefix:'m=',thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function(val){ return val;}});
+      var totalSlider = $("#totalSlider").slider({min: 0, max: 10, step: 1, value: 9, prefix:'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return val;}});
+      var trcSlider = $("#trcSlider").slider({min: 0, max: 11, step: 1, value: 0, prefix:'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return idx2trc(val);}, onChangeEnd: function(val){document.dispatchEvent(event);}});
+
       // Sketchfab Viewer API: Change Texture/material
       var uid = '928a81dbfcbc4944a5ecac27f820c6ca';//'fb43aced2ee14e1db1f4acb7638d352e';
       var iframe = document.getElementById('api-frame');
@@ -154,22 +187,56 @@
               console.log(textures);
             });
 
-            function loadTexture(file) {
-                //var url = 'https://anmrde.github.io/spectral/t399.png';
-                   //'https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg'; 
-              //'https://media.sketchfab.com/urls/7w7pAfrCfjovwykkEeRFLGw5SXS/dist/textures/24ae87ff02fe47e296d09175f86dc16a/0172db054ca945b0a95b35f9e6364a77.png';
-				var url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
-                for (var i = 0; i < myMaterials.length; i++) {
-                    var m = myMaterials[i];
-                  	if(m.name == 'earth') {
-                        api.updateTexture(url+file, m.channels.DiffusePBR.texture.uid, function(/*e, uid*/) {});
-                        api.updateTexture(url+'ocean'+file, m.channels.SpecularPBR.texture.uid, function(/*e, uid*/) {});
-                      	api.setMaterial(m);
+            function updateTexture() {
+              	console.log('started updateTexture');
+              	var page = currentPage();
+              	var trc = idx2trc(trcSlider.value);
+              	var m = zonalSlider.value;
+              	var n = totalSlider.value;
+              	var c = pageCategory(page);
+              	if (c != pageCategory(oldpage) || trc != oldtrc || m != oldm || n != oldn) {
+                  	console.log('something has changed! page='+page+' trc='+trc+' m='+m+' n='+n+' c='+c);
+                  	var url;
+                  	var file;
+                  	var changed = false;
+                  	if (c==0) {
+                      // satellite image
+                      url = '';
+                      file = '';
+                      changed = (c != pageCategory(oldpage));
+                    } else if (c==1) {
+                      // spherical harmonics
+                      url = '';
+                      file = '';
+                      changed = (c != pageCategory(oldpage) || m != oldm || n != oldn);
+                    } else if (c==2) {
+                      // orography truncation
+                      url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
+                      file ='T'+trc+'.png';
+                      changed = (c != pageCategory(oldpage) || trc != oldtrc);
                     }
+                  	if (changed && file != '' && url != '') {
+                      	console.log('got to do something! url='+url+' file='+file);
+                        for (var i = 0; i < myMaterials.length; i++) {
+                            var mat = myMaterials[i];
+                            if(mat.name == 'earth') {
+                                api.updateTexture(url+file, mat.channels.DiffusePBR.texture.uid, function(/*e, uid*/) {});
+                                api.updateTexture(url+'ocean'+file, mat.channels.SpecularPBR.texture.uid, function(/*e, uid*/) {});
+                                api.setMaterial(mat);
+                            }
+                        }
+                    }
+                  	oldpage = page;
+                  	oldtrc = trc;
+                  	oldm = m;
+                  	oldn = n;
                 }
             }
+            
+            document.addEventListener('checkViewer', function(){
+              updateTexture();
+            });
 
-      var trcSlider = $("#trcSlider").slider({min: 0, max: 11, step: 1, value: 0, prefix:'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return idx2trc(val);}, onChangeEnd: function(val){loadTexture('T'+idx2trc(trcSlider.value)+'.png');}});
         });
     });
 };

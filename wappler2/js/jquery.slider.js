@@ -88,7 +88,23 @@ function _classCallCheck(t, s) {
                     margin: parseFloat(i) + parseFloat(h) + "px auto"
                 })
             }
-            this.bubbleColor && (this.bubbleArrow.css("background", this.bubbleColor), this.bubble.css("background", this.bubbleColor)), this.bubbleFontColor && this.bubbleSpan.css("color", this.bubbleFontColor), this.thumbColor && (this.minus.css("color", this.thumbColor), this.plus.css("color", this.thumbColor), this.thumb.css("background", this.thumbColor)), this.thumbFontColor && this.thumbSpan.css("color", this.thumbFontColor), this.trackColor && (this.minus.css("border-color", this.trackColor), this.plus.css("border-color", this.trackColor), this.track.css("background", this.trackColor)), this.dragging = !1, this.thumbOffset = this.thumb.outerWidth() / 2, this.setValue(this.value), this.positionThumb(this.value), this.toggleBubble && this.value.toString().length <= this.toggleLimit ? (this.bubble.hide(), this.thumbSpan.show()) : this.thumbSpan.hide(), this.thumb.css("-ms-touch-action", "none"), this.thumb.on("mousedown touchstart", function(t) {
+            this.bubbleColor && (this.bubbleArrow.css("background", this.bubbleColor), 
+                this.bubble.css("background", this.bubbleColor)), 
+                this.bubbleFontColor && this.bubbleSpan.css("color", this.bubbleFontColor), 
+                this.thumbColor && (this.minus.css("color", this.thumbColor), 
+                this.plus.css("color", this.thumbColor), 
+                this.thumb.css("background", this.thumbColor)), 
+                this.thumbFontColor && this.thumbSpan.css("color", this.thumbFontColor), 
+                this.trackColor && (this.minus.css("border-color", this.trackColor), 
+                this.plus.css("border-color", this.trackColor), 
+                this.track.css("background", this.trackColor)), 
+                this.dragging = !1, 
+                this.thumbOffset = this.thumb.outerWidth() / 2, 
+                this.setValue(this.value), 
+                this.positionThumb(this.value), 
+                this.toggleBubble && this.value.toString().length <= this.toggleLimit ? (this.bubble.hide(), this.thumbSpan.show()) : this.thumbSpan.hide(), 
+                this.thumb.css("-ms-touch-action", "none"), 
+                this.thumb.on("mousedown touchstart", function(t) {
                 e.dragging || (t.preventDefault(), e.dragging = !0, e.bubbleState(!0))
             }), l("html").on("mousemove touchmove", function(t) {
                 e.dragging && (t.preventDefault(), "touchmove" === t.type ? e.dragThumb(t.originalEvent.touches[0].pageX) : e.dragThumb(t.originalEvent.pageX));
