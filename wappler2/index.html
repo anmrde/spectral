@@ -193,23 +193,27 @@
               	var c = pageCategory(page);
               	if (c != pageCategory(oldpage) || trc != oldtrc || m != oldm || n != oldn) {
                   	console.log('something has changed! page='+page+' trc='+trc+' m='+m+' n='+n+' c='+c);
-                  	var url;
-                  	var file;
+                  	var url = '';
+                  	var file = '';
+                  	var fileOcean = '';
                   	var changed = false;
                   	if (c==0) {
                       // satellite image
-                      url = '';
-                      file = '';
+                      url = 'https://anmrde.github.io/spectral/satellite/';
+                      file = 'albedoWithClouds.png';
+                      fileOcean = 'oceanMaskWithClouds.png';
                       changed = (c != pageCategory(oldpage));
                     } else if (c==1) {
                       // spherical harmonics
                       url = '';
                       file = '';
+                      fileOcean = '';
                       changed = (c != pageCategory(oldpage) || m != oldm || n != oldn);
                     } else if (c==2) {
                       // orography truncation
                       url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
                       file ='T'+trc+'.png';
+                      fileOcean = 'ocean'+file;
                       changed = (c != pageCategory(oldpage) || trc != oldtrc);
                     }
                   	if (changed && file != '' && url != '') {
@@ -218,7 +222,7 @@
                             var mat = myMaterials[i];
                             if(mat.name == 'earth') {
                                 api.updateTexture(url+file, mat.channels.DiffusePBR.texture.uid, function(/*e, uid*/) {});
-                                api.updateTexture(url+'ocean'+file, mat.channels.SpecularPBR.texture.uid, function(/*e, uid*/) {});
+                                api.updateTexture(url+fileOcean, mat.channels.SpecularPBR.texture.uid, function(/*e, uid*/) {});
                                 api.setMaterial(mat);
                             }
                         }
