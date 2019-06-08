@@ -55,17 +55,17 @@
             <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Start</button>
         </div>
         <div class="tab-pane fade" id="harmonics" role="tabpanel" aria-labelledby="harmonics-tab">
-          <h1 class="mt-3">Spherical Harmonics</h1>
-          <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
             <input id="zonalSlider">
             <input id="totalSlider">
+          <h1 class="mt-3">Spherical Harmonics</h1>
+          <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth should change when you press the buttons below! Let's try it!</p>
             <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
             <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
         </div>
         <div class="tab-pane fade" id="truncation" role="tabpanel" aria-labelledby="truncation-tab">
+            <input id="trcSlider">
           <h1 class="mt-3">Truncation</h1>
           <p>The truncation is the highest zonal or total wavenumber that we use. To demonstrate the impact of truncation on a familiar field the globe shows now the orography (height above sea level). This orography was obtained from the spectral field used operationally in IFS. The slider below allows you to change the truncation of this spectral field. Which truncation is necessary to recognise the your home continent?</p>
-            <input id="trcSlider">
 
             <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
             <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
@@ -193,27 +193,23 @@
               	var c = pageCategory(page);
               	if (c != pageCategory(oldpage) || trc != oldtrc || m != oldm || n != oldn) {
                   	console.log('something has changed! page='+page+' trc='+trc+' m='+m+' n='+n+' c='+c);
-                  	var url = '';
-                  	var file = '';
-                  	var fileOcean = '';
+                  	var url;
+                  	var file;
                   	var changed = false;
                   	if (c==0) {
                       // satellite image
-                      url = 'https://anmrde.github.io/spectral/satellite/';
-                      file = 'albedoWithCloudsSmall.jpg';
-                      fileOcean = 'oceanMaskWithClouds.jpg';
+                      url = '';
+                      file = '';
                       changed = (c != pageCategory(oldpage));
                     } else if (c==1) {
                       // spherical harmonics
                       url = '';
                       file = '';
-                      fileOcean = '';
                       changed = (c != pageCategory(oldpage) || m != oldm || n != oldn);
                     } else if (c==2) {
                       // orography truncation
                       url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
                       file ='T'+trc+'.png';
-                      fileOcean = 'ocean'+file;
                       changed = (c != pageCategory(oldpage) || trc != oldtrc);
                     }
                   	if (changed && file != '' && url != '') {
@@ -222,7 +218,7 @@
                             var mat = myMaterials[i];
                             if(mat.name == 'earth') {
                                 api.updateTexture(url+file, mat.channels.DiffusePBR.texture.uid, function(/*e, uid*/) {});
-                                api.updateTexture(url+fileOcean, mat.channels.SpecularPBR.texture.uid, function(/*e, uid*/) {});
+                                api.updateTexture(url+'ocean'+file, mat.channels.SpecularPBR.texture.uid, function(/*e, uid*/) {});
                                 api.setMaterial(mat);
                             }
                         }
@@ -240,6 +236,7 @@
 
         });
     });
+    $("#customSwitch1").on('click',function(){api.set})
 };
 client.init(uid, {
     success: success,
