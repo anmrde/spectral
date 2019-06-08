@@ -111,7 +111,6 @@
                     $(pane[i+1]).addClass('show active');
                   	document.dispatchEvent(event);
                 }
-
             });
             // Prev
             $('.prevtab').on('click', function(){
@@ -128,7 +127,6 @@
             });
         }
         bootstrapTabControl();
-
       function idx2trc(idx) {
         var trc = 0;
         if (idx == 0) {
@@ -164,7 +162,6 @@
       var zonalSlider = $("#zonalSlider").slider({min: 0, max: 10, step: 1, value: 6, prefix:'m=',thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function(val){ return val;}});
       var totalSlider = $("#totalSlider").slider({min: 0, max: 10, step: 1, value: 9, prefix:'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return val;}});
       var trcSlider = $("#trcSlider").slider({min: 0, max: 11, step: 1, value: 0, prefix:'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function(val){ return idx2trc(val);}, onChangeEnd: function(val){document.dispatchEvent(event);}});
-
       // Sketchfab Viewer API: Change Texture/material
       var uid = '928a81dbfcbc4944a5ecac27f820c6ca';//'fb43aced2ee14e1db1f4acb7638d352e';
       var iframe = document.getElementById('api-frame');
@@ -183,7 +180,6 @@
             api.getTextureList(function(err, textures) {
               console.log(textures);
             });
-
             function updateTexture() {
               	console.log('started updateTexture');
               	var page = currentPage();
@@ -193,23 +189,27 @@
               	var c = pageCategory(page);
               	if (c != pageCategory(oldpage) || trc != oldtrc || m != oldm || n != oldn) {
                   	console.log('something has changed! page='+page+' trc='+trc+' m='+m+' n='+n+' c='+c);
-                  	var url;
-                  	var file;
+                  	var url = '';
+                  	var file = '';
+                  	var fileOcean = '';
                   	var changed = false;
                   	if (c==0) {
                       // satellite image
-                      url = '';
-                      file = '';
+                      url = 'https://anmrde.github.io/spectral/satellite/';
+                      file = 'albedoWithCloudsSmall.jpg';
+                      fileOcean = 'oceanMaskWithClouds.jpg';
                       changed = (c != pageCategory(oldpage));
                     } else if (c==1) {
                       // spherical harmonics
                       url = '';
                       file = '';
+                      fileOcean = '';
                       changed = (c != pageCategory(oldpage) || m != oldm || n != oldn);
                     } else if (c==2) {
                       // orography truncation
                       url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
                       file ='T'+trc+'.png';
+                      fileOcean = 'ocean'+file;
                       changed = (c != pageCategory(oldpage) || trc != oldtrc);
                     }
                   	if (changed && file != '' && url != '') {
@@ -218,7 +218,7 @@
                             var mat = myMaterials[i];
                             if(mat.name == 'earth') {
                                 api.updateTexture(url+file, mat.channels.DiffusePBR.texture.uid, function(/*e, uid*/) {});
-                                api.updateTexture(url+'ocean'+file, mat.channels.SpecularPBR.texture.uid, function(/*e, uid*/) {});
+                                api.updateTexture(url+fileOcean, mat.channels.SpecularPBR.texture.uid, function(/*e, uid*/) {});
                                 api.setMaterial(mat);
                             }
                         }
@@ -233,10 +233,8 @@
             document.addEventListener('checkViewer', function(){
               updateTexture();
             });
-
         });
     });
-    $("#customSwitch1").on('click',function(){api.set})
 };
 client.init(uid, {
     success: success,
@@ -248,7 +246,6 @@ client.init(uid, {
   	camera: 0,
   	ui_inspector: 0
 });
-
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
