@@ -180,9 +180,9 @@
     var oldtrc = -1;
     var oldm = -1;
     var oldn = -1;
-    var zonalSlider = $("#zonalSlider").slider({ min: 0, max: 10, step: 1, value: 6, prefix: 'm=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function (val) { return val; } });
-    var totalSlider = $("#totalSlider").slider({ min: 0, max: 10, step: 1, value: 9, prefix: 'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; } });
-    var trcSlider = $("#trcSlider").slider({ min: 0, max: 11, step: 1, value: 0, prefix: 'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return idx2trc(val); }, onChangeEnd: function (val) { document.dispatchEvent(event); } });
+    var zonalSlider = $("#zonalSlider").slider({ min: 0, max: 24, step: 1, value: 6, prefix: 'm=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function (val) { return val; } });
+    var totalSlider = $("#totalSlider").slider({ min: 0, max: 24, step: 1, value: 9, prefix: 'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; } });
+    var trcSlider = $("#trcSlider").slider({ min: 0, max: 11, step: 1, value: 0, prefix: 'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return idx2trc(val); }, onChange: function (val) { document.dispatchEvent(event); } });
     // Sketchfab Viewer API: Change Texture/material
     var uid = '928a81dbfcbc4944a5ecac27f820c6ca';//'fb43aced2ee14e1db1f4acb7638d352e';
     var iframe = document.getElementById('api-frame');
@@ -214,6 +214,7 @@
               var file = '';
               var fileOcean = '';
               var changed = false;
+              var enableSpec = true;
               if (c == 0) {
                 // satellite image
                 url = 'https://anmrde.github.io/spectral/satellite/';
@@ -222,10 +223,14 @@
                 changed = (c != pageCategory(oldpage));
               } else if (c == 1) {
                 // spherical harmonics
-                url = '';
-                file = '';
+                url = 'https://anmrde.github.io/spectral/harmonics/';
+                var mp = m;
+                var np = n;
+                if (m == 0) np = 0;
+                file = 'm' + mp + 'n' + np + '.png';
                 fileOcean = '';
                 changed = (c != pageCategory(oldpage) || m != oldm || n != oldn);
+                enableSpec = false;
               } else if (c == 2) {
                 // orography truncation
                 url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
@@ -235,11 +240,18 @@
               }
               if (changed && file != '' && url != '') {
                 console.log('got to do something! url=' + url + ' file=' + file);
+                if (c == 1) {
+                  zonalSlider.max = totalSlider.value;
+                  totalSlider.min = zonalSlider.value;
+                }
                 for (var i = 0; i < myMaterials.length; i++) {
                   var mat = myMaterials[i];
                   if (mat.name == 'earth') {
                     api.updateTexture(url + file, mat.channels.DiffusePBR.texture.uid, function (/*e, uid*/) { });
-                    api.updateTexture(url + fileOcean, mat.channels.SpecularPBR.texture.uid, function (/*e, uid*/) { });
+                    if (fileOcean != '') {
+                      api.updateTexture(url + fileOcean, mat.channels.SpecularPBR.texture.uid, function (/*e, uid*/) { });
+                    }
+                    mat.channels.SpecularPBR.enable = enableSpec;
                     api.setMaterial(mat);
                   }
                 }
