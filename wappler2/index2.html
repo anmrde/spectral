@@ -131,6 +131,7 @@
           $(pane[i]).removeClass('show active');
           $(pane[i + 1]).addClass('show active');
           document.dispatchEvent(event);
+          $(window).trigger('resize');
         }
       });
       // Prev
