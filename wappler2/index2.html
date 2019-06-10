@@ -35,6 +35,10 @@
             <h3 class="mt-3 d-none d-lg-block text-lg-left">Sliders</h3>
             <input id="zonalSlider">
             <input id="totalSlider">
+            <button onclick="moreOptions()" id="optionsBtn">Show more options</button>
+            <div id="optionsDiv" style="display: none">
+              <input id="overlaySlider">
+            </div>
           </div>
           <div id="truncation-slider" style="display: none">
             <h3 class="mt-3 d-none d-lg-block text-lg-left">Slider</h3>
@@ -182,11 +186,21 @@
     var oldtrc = -1;
     var oldm = -1;
     var oldn = -1;
+    var oldthickness = -1;
     var zonalSlider = $("#zonalSlider").slider({ min: 0, max: 24, step: 1, value: 6, prefix: 'm=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
     var totalSlider = $("#totalSlider").slider({ min: 0, max: 24, step: 1, value: 9, prefix: 'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
     var trcSlider = $("#trcSlider").slider({ min: 0, max: 11, step: 1, value: 0, prefix: 'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return idx2trc(val); }, onChange: function (val) { document.dispatchEvent(event); } });
+    var overlaySlider = $("#overlaySlider").slider({ min: 0, max: 10, step: 1, value: 0, postfix: '%', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return 10 * val; }, onChange: function (val) { document.dispatchEvent(event); } });
     var harmonicsSliders = document.getElementById("harmonics-sliders");
     var truncationSlider = document.getElementById("truncation-slider");
+    var optionsDiv = document.getElementById("optionsDiv");
+    function moreOptions() {
+      if (optionsDiv.style.display == "none") {
+        optionsDiv.style.display = "block";
+      } else {
+        optionsDiv.style.display = "none";
+      }
+    }
     // Sketchfab Viewer API: Change Texture/material
     var uid = '928a81dbfcbc4944a5ecac27f820c6ca';//'fb43aced2ee14e1db1f4acb7638d352e';
     var iframe = document.getElementById('api-frame');
@@ -213,36 +227,34 @@
             var n = totalSlider.value;
             if (currentCategory != oldcategory || trc != oldtrc || m != oldm || n != oldn) {
               console.log('something has changed! page=' + page + ' trc=' + trc + ' m=' + m + ' n=' + n + ' c=' + currentCategory);
-              var url = '';
+              var url = 'https://anmrde.github.io/spectral/';
               var file = '';
-              var fileOcean = '';
+              var fileOcean = 'white.png';
+              var fileOverlay = 'black.png';
               var changed = false;
               if (currentCategory == 0) {
                 // satellite image
                 harmonicsSliders.style.display = "none";
                 truncationSlider.style.display = "none";
-                url = 'https://anmrde.github.io/spectral/satellite/';
-                file = 'albedoWithCloudsSmall.jpg';
-                fileOcean = 'oceanMaskWithClouds.jpg';
+                file = 'satellite/albedoWithCloudsSmall.jpg';
+                fileOcean = 'satellite/oceanMaskWithClouds.jpg';
                 changed = (currentCategory != oldcategory);
               } else if (currentCategory == 1) {
                 // spherical harmonics
                 harmonicsSliders.style.display = "block";
                 truncationSlider.style.display = "none";
-                url = 'https://anmrde.github.io/spectral/harmonics/';
                 var mp = m;
                 var np = n;
                 if (m == 0) np = 0;
-                file = 'm' + mp + 'n' + np + '.png';
-                fileOcean = 'specular.png';
+                file = 'harmonics/m' + mp + 'n' + np + '.png';
+                fileOverlay = 'harmonics/oceanT1279.png';
                 changed = (currentCategory != oldcategory || m != oldm || n != oldn);
               } else if (currentCategory == 2) {
                 // orography truncation
                 harmonicsSliders.style.display = "none";
                 truncationSlider.style.display = "block";
-                url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
-                file = 'T' + trc + '.png';
-                fileOcean = 'ocean' + file;
+                file = 'orography/greenAt60m/T' + trc + '.png';
+                fileOcean = 'orography/greenAt60m/ocean' + file;
                 changed = (currentCategory != oldcategory || trc != oldtrc);
               }
               if (changed && file != '' && url != '') {
@@ -257,6 +269,13 @@
                   if (mat.name == 'earth') {
                     api.updateTexture(url + file, mat.channels.DiffusePBR.texture.uid, function (/*e, uid*/) { });
                     api.updateTexture(url + fileOcean, mat.channels.SpecularPBR.texture.uid, function (/*e, uid*/) { });
+                    if (currentCategory == 1) {
+                      mat.channels.ClearCoat.enable = true;
+                      mat.channels.ClearCoat.thickness = overlaySlider.value;
+                      api.updateTexture(url + fileOverlay, mat.channels.ClearCoat.texture.uid, function (/*e, uid*/) { });
+                    } else {
+                      mat.channels.ClearCoat.enable = false;
+                    }
                     api.setMaterial(mat);
                   }
                 }
