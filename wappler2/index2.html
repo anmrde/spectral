@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en-GB">
 
 <head>
   <meta charset="UTF-8">
@@ -17,6 +17,8 @@
   <script src="js/jquery.slider.js"></script>
   <script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
   <script src="dmxAppConnect/dmxBootstrap4Collapse/dmxBootstrap4Collapse.js" defer=""></script>
+  <script src="dmxAppConnect/dmxTyped/dmxTyped.js" defer=""></script>
+  <script src="dmxAppConnect/dmxTyped/typed.min.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="index">
@@ -35,8 +37,11 @@
             <h3 class="mt-3 d-none d-lg-block text-lg-left">Sliders</h3>
             <input id="zonalSlider">
             <input id="totalSlider">
-            <button onclick="moreOptions()" id="optionsBtn">Show more options</button>
+            <button class="btn text-sm-center btn-light mt-n10 mt-n5" onclick="moreOptions()" id="optionsBtn">show
+              options
+            </button>
             <div id="optionsDiv" style="display: none">
+              <p class="mt-3 mb-n2">Visibility of land overlay:</p>
               <input id="overlaySlider">
             </div>
           </div>
@@ -44,7 +49,7 @@
             <h3 class="mt-3 d-none d-lg-block text-lg-left">Slider</h3>
             <input id="trcSlider">
           </div>
-          <div class="container text-sm-left">
+          <div class="container text-sm-left pl-0 pr-0">
             <ul class="nav nav-tabs" id="myTab" role="tablist" style="display: none;">
               <li class="nav-item">
                 <a class="nav-link active cat0" id="home-tab" data-toggle="tab" href="#welcome" role="tab"
@@ -53,6 +58,10 @@
               <li class="nav-item">
                 <a class="nav-link cat1" id="harmonics-tab" data-toggle="tab" href="#harmonics" role="tab"
                   aria-controls="harmonics" aria-selected="false">Spherical Harmonics</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat1" id="harmonics-quiz1-tab" data-toggle="tab" href="#harmonics-quiz1" role="tab"
+                  aria-controls="harmonics-quiz1" aria-selected="false">Quiz 1.1</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link cat2" id="profile-tab" data-toggle="tab" href="#truncation" role="tab"
@@ -71,17 +80,41 @@
                   method. Throughout the entire course you will see above an interactive globe. You can always rotate it
                   and zoom in and out. Many of the exercises will allow you to display data on this interactive globe.
                   Please familiarise yourself with rotating and zooming.</p>
+                <p class="d-lg-none text-lg-left">The globe is always shown at the top of the page. This way it won't
+                  move depending on the length of the text description. The description (like this one that you are
+                  reading right now) is always at the bottom of the page. Between the globe and the description you will
+                  often find some interactive sliders which change the look of the globe. This way the sliders are
+                  always close to the globe wich makes it easier to change them on small displays like phones.</p>
                 <!-- desktop contents -->
                 <p class="d-none d-lg-block text-lg-left">This is a short interactive training about the spectral
                   transform method. Throughout the entire course you will see an interactive globe on the left side. You
                   can always rotate it and zoom in and out. Many of the exercises will allow you to display data on this
                   interactive globe. Please familiarise yourself with rotating and zooming.</p>
+                <p class="d-none d-lg-block text-lg-left">The globe is always shown at the top of the page. This way it
+                  won't move depending on the length of the text description. The description (like this one that you
+                  are reading right now) is always in the bottom right corner of the page. In the top right corner you
+                  will often find some interactive sliders which change the look of the globe.</p>
+                <!-- contents for all -->
+                <p>The course starts by
+                  touching the start button below.</p>
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Start</button>
               </div>
               <div class="tab-pane fade" id="harmonics" role="tabpanel" aria-labelledby="harmonics-tab">
                 <h2 class="mt-3">Spherical Harmonics</h2>
-                <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth
-                  should change when you press the buttons below! Let's try it!</p>
+                <p>The globe shows now the spherical harmonic functions. These are characterised by zonal wavenumber m
+                  and total wavenumber n. You can change m and n with the sliders above.</p>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="harmonics-quiz1" role="tabpanel" aria-labelledby="harmonics-quiz1-tab">
+                <h2 class="mt-3">Quiz 1.1</h2>
+                <p>Here comes a question.</p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz1.1')" id="optionsBtn"
+                  style="width: 100%">answer 1
+                </button>
+                <div id="quiz1.1" style="display: none">
+                  <p>Here comes some explanation</p>
+                </div>
                 <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
               </div>
@@ -190,15 +223,27 @@
     var zonalSlider = $("#zonalSlider").slider({ min: 0, max: 24, step: 1, value: 6, prefix: 'm=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
     var totalSlider = $("#totalSlider").slider({ min: 0, max: 24, step: 1, value: 9, prefix: 'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
     var trcSlider = $("#trcSlider").slider({ min: 0, max: 11, step: 1, value: 0, prefix: 'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return idx2trc(val); }, onChange: function (val) { document.dispatchEvent(event); } });
-    var overlaySlider = $("#overlaySlider").slider({ min: 0, max: 10, step: 1, value: 0, postfix: '%', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return 10 * val; }, onChange: function (val) { document.dispatchEvent(event); } });
+    var overlaySlider = $("#overlaySlider").slider({ min: 0, max: 100, step: 1, value: 50, postfix: '%', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
     var harmonicsSliders = document.getElementById("harmonics-sliders");
     var truncationSlider = document.getElementById("truncation-slider");
     var optionsDiv = document.getElementById("optionsDiv");
+    var optionsBtn = document.getElementById("optionsBtn");
     function moreOptions() {
       if (optionsDiv.style.display == "none") {
         optionsDiv.style.display = "block";
+        optionsBtn.textContent = "hide options";
       } else {
         optionsDiv.style.display = "none";
+        optionsBtn.textContent = "show options";
+      }
+      $(window).trigger('resize');
+    }
+    function showAnswer(answerId) {
+      var answerDiv = document.getElementById(answerId);
+      if (answerDiv.style.display == "none") {
+        answerDiv.style.display = "block";
+      } else {
+        answerDiv.style.display = "none";
       }
     }
     // Sketchfab Viewer API: Change Texture/material
@@ -225,7 +270,8 @@
             var trc = idx2trc(trcSlider.value);
             var m = zonalSlider.value;
             var n = totalSlider.value;
-            if (currentCategory != oldcategory || trc != oldtrc || m != oldm || n != oldn) {
+            var thickness = overlaySlider.value;
+            if (currentCategory != oldcategory || trc != oldtrc || m != oldm || n != oldn || thickness != oldthickness) {
               console.log('something has changed! page=' + page + ' trc=' + trc + ' m=' + m + ' n=' + n + ' c=' + currentCategory);
               var url = 'https://anmrde.github.io/spectral/';
               var file = '';
@@ -248,13 +294,13 @@
                 if (m == 0) np = 0;
                 file = 'harmonics/m' + mp + 'n' + np + '.png';
                 fileOverlay = 'harmonics/oceanT1279.png';
-                changed = (currentCategory != oldcategory || m != oldm || n != oldn);
+                changed = (currentCategory != oldcategory || m != oldm || n != oldn || thickness != oldthickness);
               } else if (currentCategory == 2) {
                 // orography truncation
                 harmonicsSliders.style.display = "none";
                 truncationSlider.style.display = "block";
                 file = 'orography/greenAt60m/T' + trc + '.png';
-                fileOcean = 'orography/greenAt60m/ocean' + file;
+                fileOcean = 'orography/greenAt60m/oceanT' + trc + '.png';
                 changed = (currentCategory != oldcategory || trc != oldtrc);
               }
               if (changed && file != '' && url != '') {
@@ -270,9 +316,9 @@
                     api.updateTexture(url + file, mat.channels.DiffusePBR.texture.uid, function (/*e, uid*/) { });
                     api.updateTexture(url + fileOcean, mat.channels.SpecularPBR.texture.uid, function (/*e, uid*/) { });
                     if (currentCategory == 1) {
-                      mat.channels.ClearCoat.enable = true;
-                      mat.channels.ClearCoat.thickness = overlaySlider.value;
-                      api.updateTexture(url + fileOverlay, mat.channels.ClearCoat.texture.uid, function (/*e, uid*/) { });
+                      if (overlaySlider.value == 0) { mat.channels.ClearCoat.enable = false; } else { mat.channels.ClearCoat.enable = true; }
+                      mat.channels.ClearCoat.thickness = overlaySlider.value / 5.0;
+                      if (currentCategory != oldcategory) api.updateTexture(url + fileOverlay, mat.channels.ClearCoat.texture.uid, function (/*e, uid*/) { });
                     } else {
                       mat.channels.ClearCoat.enable = false;
                     }
@@ -284,6 +330,7 @@
               oldtrc = trc;
               oldm = m;
               oldn = n;
+              oldthickness = thickness;
             }
           }
 
@@ -309,6 +356,16 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>
