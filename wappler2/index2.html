@@ -43,19 +43,19 @@
           <div class="container text-sm-left">
             <ul class="nav nav-tabs" id="myTab" role="tablist" style="display: none;">
               <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#welcome" role="tab"
+                <a class="nav-link active cat0" id="home-tab" data-toggle="tab" href="#welcome" role="tab"
                   aria-controls="welcome" aria-selected="true">Welcome</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="harmonics-tab" data-toggle="tab" href="#harmonics" role="tab"
+                <a class="nav-link cat1" id="harmonics-tab" data-toggle="tab" href="#harmonics" role="tab"
                   aria-controls="harmonics" aria-selected="false">Spherical Harmonics</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#truncation" role="tab"
+                <a class="nav-link cat2" id="profile-tab" data-toggle="tab" href="#truncation" role="tab"
                   aria-controls="truncation" aria-selected="false">Truncation</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#congrats" role="tab"
+                <a class="nav-link cat0" id="contact-tab" data-toggle="tab" href="#congrats" role="tab"
                   aria-controls="congrats" aria-selected="false">Well done!</a>
               </li>
             </ul>
@@ -110,6 +110,7 @@
   <!-- Initialize the viewer -->
   <script type="text/javascript">
     var event = new Event('checkViewer');
+    var currentCategory = 0;
     function currentPage() {
       var i, items = $('.nav-link');
       for (i = 0; i < items.length; i++) {
@@ -122,6 +123,11 @@
     /* -------------------------------------------------------------
           bootstrapTabControl
       ------------------------------------------------------------- */
+    function updateCategory(tab) {
+      if (tab.hasClass('cat0')) currentCategory = 0;
+      if (tab.hasClass('cat1')) currentCategory = 1;
+      if (tab.hasClass('cat2')) currentCategory = 2;
+    }
     function bootstrapTabControl() {
       var i, items = $('.nav-link'), pane = $('.tab-pane');
       // next
@@ -131,6 +137,7 @@
           // for tab
           $(items[i]).removeClass('active');
           $(items[i + 1]).addClass('active');
+          updateCategory($(items[i + 1]));
           // for pane
           $(pane[i]).removeClass('show active');
           $(pane[i + 1]).addClass('show active');
@@ -145,6 +152,7 @@
           // for tab
           $(items[i]).removeClass('active');
           $(items[i - 1]).addClass('active');
+          updateCategory($(items[i - 1]));
           // for pane
           $(pane[i]).removeClass('show active');
           $(pane[i - 1]).addClass('show active');
@@ -170,18 +178,7 @@
       }
       return trc;
     }
-    function pageCategory(p) {
-      var c = -1;
-      if (p == 0 || p == 3) {
-        c = 0; // satellite image
-      } else if (p == 1) {
-        c = 1; // spherical harmonics
-      } else if (p == 2) {
-        c = 2; // orography truncation
-      }
-      return c;
-    }
-    var oldpage = -1;
+    var oldcategory = -1;
     var oldtrc = -1;
     var oldm = -1;
     var oldn = -1;
@@ -214,23 +211,22 @@
             var trc = idx2trc(trcSlider.value);
             var m = zonalSlider.value;
             var n = totalSlider.value;
-            var c = pageCategory(page);
-            if (c != pageCategory(oldpage) || trc != oldtrc || m != oldm || n != oldn) {
-              console.log('something has changed! page=' + page + ' trc=' + trc + ' m=' + m + ' n=' + n + ' c=' + c);
+            if (currentCategory != oldcategory || trc != oldtrc || m != oldm || n != oldn) {
+              console.log('something has changed! page=' + page + ' trc=' + trc + ' m=' + m + ' n=' + n + ' c=' + currentCategory);
               var url = '';
               var file = '';
               var fileOcean = '';
               var changed = false;
               var enableSpec = true;
-              if (c == 0) {
+              if (currentCategory == 0) {
                 // satellite image
                 harmonicsSliders.style.display = "none";
                 truncationSlider.style.display = "none";
                 url = 'https://anmrde.github.io/spectral/satellite/';
                 file = 'albedoWithCloudsSmall.jpg';
                 fileOcean = 'oceanMaskWithClouds.jpg';
-                changed = (c != pageCategory(oldpage));
-              } else if (c == 1) {
+                changed = (currentCategory != oldcategory);
+              } else if (currentCategory == 1) {
                 // spherical harmonics
                 harmonicsSliders.style.display = "block";
                 truncationSlider.style.display = "none";
@@ -240,20 +236,20 @@
                 if (m == 0) np = 0;
                 file = 'm' + mp + 'n' + np + '.png';
                 fileOcean = '';
-                changed = (c != pageCategory(oldpage) || m != oldm || n != oldn);
+                changed = (currentCategory != oldcategory || m != oldm || n != oldn);
                 enableSpec = false;
-              } else if (c == 2) {
+              } else if (currentCategory == 2) {
                 // orography truncation
                 harmonicsSliders.style.display = "none";
                 truncationSlider.style.display = "block";
                 url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
                 file = 'T' + trc + '.png';
                 fileOcean = 'ocean' + file;
-                changed = (c != pageCategory(oldpage) || trc != oldtrc);
+                changed = (currentCategory != oldcategory || trc != oldtrc);
               }
               if (changed && file != '' && url != '') {
                 console.log('got to do something! url=' + url + ' file=' + file);
-                if (c == 1) {
+                if (currentCategory == 1) {
                   zonalSlider.max = totalSlider.value;
                   totalSlider.min = zonalSlider.value;
                 }
@@ -270,7 +266,7 @@
                   }
                 }
               }
-              oldpage = page;
+              oldcategory = currentCategory;
               oldtrc = trc;
               oldm = m;
               oldn = n;
