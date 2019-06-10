@@ -108,7 +108,6 @@ function _classCallCheck(t, s) {
                 e.dragging || (t.preventDefault(), e.dragging = !0, e.bubbleState(!0))
             }), l("html").on("mousemove touchmove", function(t) {
                 e.dragging && (t.preventDefault(), "touchmove" === t.type ? e.dragThumb(t.originalEvent.touches[0].pageX) : e.dragThumb(t.originalEvent.pageX));
-                s.onChange(e.value);
             }).on("mouseup touchend", function(t) {
                 e.dragging && (t.preventDefault(), e.dragging = !1, e.bubbleState(!1));
                 s.onChangeEnd(e.value);
@@ -142,9 +141,11 @@ function _classCallCheck(t, s) {
         }, {
             key: "setValue",
             value: function(t) {
+                var oldval = this.value;
                 this.value = Math.round((t - this.min) / this.step) * this.step + this.min, this.element.val(this.value);
                 var val = this.bubbleFormat(this.value);
                 var s = this.prefix + this.addCommas(val.toFixed(this.decimals)) + this.postfix;
+                if(oldval != this.value) this.onChange(this.value);
                 return this.thumbSpan.text(s), this.bubbleSpan.text(s)
             }
         }, {

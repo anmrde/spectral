@@ -31,6 +31,15 @@
       </div>
       <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-lg-3 col-md-12 col-sm-12 col-xl-3">
         <div>
+          <div id="harmonics-sliders" style="display: none">
+            <h3 class="mt-3 d-none d-lg-block text-lg-left">Sliders</h3>
+            <input id="zonalSlider">
+            <input id="totalSlider">
+          </div>
+          <div id="truncation-slider" style="display: none">
+            <h3 class="mt-3 d-none d-lg-block text-lg-left">Slider</h3>
+            <input id="trcSlider">
+          </div>
           <div class="container text-sm-left">
             <ul class="nav nav-tabs" id="myTab" role="tablist" style="display: none;">
               <li class="nav-item">
@@ -66,9 +75,6 @@
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Start</button>
               </div>
               <div class="tab-pane fade" id="harmonics" role="tabpanel" aria-labelledby="harmonics-tab">
-                <h3 class="mt-3 d-none d-lg-block text-lg-left">Sliders</h3>
-                <input id="zonalSlider">
-                <input id="totalSlider">
                 <h2 class="mt-3">Spherical Harmonics</h2>
                 <p>This is a test of the rotating earth visualisation made with Sketchfab. The texture of the earth
                   should change when you press the buttons below! Let's try it!</p>
@@ -76,8 +82,6 @@
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
               </div>
               <div class="tab-pane fade" id="truncation" role="tabpanel" aria-labelledby="truncation-tab">
-                <h3 class="mt-3 d-none d-lg-block text-lg-left">Slider</h3>
-                <input id="trcSlider">
                 <h2 class="mt-3">Truncation</h2>
                 <p>The truncation is the highest zonal or total wavenumber that we use. To demonstrate the impact of
                   truncation on a familiar field the globe shows now the orography (height above sea level). This
@@ -181,9 +185,11 @@
     var oldtrc = -1;
     var oldm = -1;
     var oldn = -1;
-    var zonalSlider = $("#zonalSlider").slider({ min: 0, max: 24, step: 1, value: 6, prefix: 'm=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function (val) { return val; } });
-    var totalSlider = $("#totalSlider").slider({ min: 0, max: 24, step: 1, value: 9, prefix: 'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; } });
+    var zonalSlider = $("#zonalSlider").slider({ min: 0, max: 24, step: 1, value: 6, prefix: 'm=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
+    var totalSlider = $("#totalSlider").slider({ min: 0, max: 24, step: 1, value: 9, prefix: 'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
     var trcSlider = $("#trcSlider").slider({ min: 0, max: 11, step: 1, value: 0, prefix: 'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return idx2trc(val); }, onChange: function (val) { document.dispatchEvent(event); } });
+    var harmonicsSliders = document.getElementById("harmonics-sliders");
+    var truncationSlider = document.getElementById("truncation-slider");
     // Sketchfab Viewer API: Change Texture/material
     var uid = '928a81dbfcbc4944a5ecac27f820c6ca';//'fb43aced2ee14e1db1f4acb7638d352e';
     var iframe = document.getElementById('api-frame');
@@ -218,12 +224,16 @@
               var enableSpec = true;
               if (c == 0) {
                 // satellite image
+                harmonicsSliders.style.display = "none";
+                truncationSlider.style.display = "none";
                 url = 'https://anmrde.github.io/spectral/satellite/';
                 file = 'albedoWithCloudsSmall.jpg';
                 fileOcean = 'oceanMaskWithClouds.jpg';
                 changed = (c != pageCategory(oldpage));
               } else if (c == 1) {
                 // spherical harmonics
+                harmonicsSliders.style.display = "block";
+                truncationSlider.style.display = "none";
                 url = 'https://anmrde.github.io/spectral/harmonics/';
                 var mp = m;
                 var np = n;
@@ -234,6 +244,8 @@
                 enableSpec = false;
               } else if (c == 2) {
                 // orography truncation
+                harmonicsSliders.style.display = "none";
+                truncationSlider.style.display = "block";
                 url = 'https://anmrde.github.io/spectral/orography/greenAt60m/';
                 file = 'T' + trc + '.png';
                 fileOcean = 'ocean' + file;
@@ -245,6 +257,7 @@
                   zonalSlider.max = totalSlider.value;
                   totalSlider.min = zonalSlider.value;
                 }
+                $(window).trigger('resize');
                 for (var i = 0; i < myMaterials.length; i++) {
                   var mat = myMaterials[i];
                   if (mat.name == 'earth') {
