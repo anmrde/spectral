@@ -217,7 +217,6 @@
               var file = '';
               var fileOcean = '';
               var changed = false;
-              var enableSpec = true;
               if (currentCategory == 0) {
                 // satellite image
                 harmonicsSliders.style.display = "none";
@@ -235,9 +234,8 @@
                 var np = n;
                 if (m == 0) np = 0;
                 file = 'm' + mp + 'n' + np + '.png';
-                fileOcean = '';
+                fileOcean = 'specular.png';
                 changed = (currentCategory != oldcategory || m != oldm || n != oldn);
-                enableSpec = false;
               } else if (currentCategory == 2) {
                 // orography truncation
                 harmonicsSliders.style.display = "none";
@@ -258,10 +256,7 @@
                   var mat = myMaterials[i];
                   if (mat.name == 'earth') {
                     api.updateTexture(url + file, mat.channels.DiffusePBR.texture.uid, function (/*e, uid*/) { });
-                    if (fileOcean != '') {
-                      api.updateTexture(url + fileOcean, mat.channels.SpecularPBR.texture.uid, function (/*e, uid*/) { });
-                    }
-                    mat.channels.SpecularPBR.enable = enableSpec;
+                    api.updateTexture(url + fileOcean, mat.channels.SpecularPBR.texture.uid, function (/*e, uid*/) { });
                     api.setMaterial(mat);
                   }
                 }
