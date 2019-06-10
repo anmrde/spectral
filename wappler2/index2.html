@@ -17,8 +17,6 @@
   <script src="js/jquery.slider.js"></script>
   <script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
   <script src="dmxAppConnect/dmxBootstrap4Collapse/dmxBootstrap4Collapse.js" defer=""></script>
-  <script src="dmxAppConnect/dmxTyped/dmxTyped.js" defer=""></script>
-  <script src="dmxAppConnect/dmxTyped/typed.min.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="index">
@@ -37,10 +35,13 @@
             <h3 class="mt-3 d-none d-lg-block text-lg-left">Sliders</h3>
             <input id="zonalSlider">
             <input id="totalSlider">
-            <button class="btn text-sm-center btn-light mt-n10 mt-n5" onclick="moreOptions()" id="optionsBtn">show
-              options
+            <button class="btn text-sm-center btn-light mt-n2 mt-n3" onclick="moreOptions()" id="optionsBtn">show
+              colorbar+options
             </button>
             <div id="optionsDiv" style="display: none">
+              <div id="harmonicsColorbarDiv" style="text-align: center">
+                <img src="../harmonics/colorbar.png">​
+              </div>
               <p class="mt-3 mb-n2">Visibility of land overlay:</p>
               <input id="overlaySlider">
             </div>
@@ -48,6 +49,12 @@
           <div id="truncation-slider" style="display: none">
             <h3 class="mt-3 d-none d-lg-block text-lg-left">Slider</h3>
             <input id="trcSlider">
+            <button class="btn text-sm-center btn-light mt-n2 mt-n3" onclick="showColorbar()" id="truncationColorbarBtn"
+              style="display: block">show colorbar
+            </button>
+            <div id="truncationColorbarDiv" style="display: none;text-align: center">
+              <img src="../orography/greenAt60m/colorbar.png">​
+            </div>
           </div>
           <div class="container text-sm-left pl-0 pr-0">
             <ul class="nav nav-tabs" id="myTab" role="tablist" style="display: none;">
@@ -81,8 +88,8 @@
                   and zoom in and out. Many of the exercises will allow you to display data on this interactive globe.
                   Please familiarise yourself with rotating and zooming.</p>
                 <p class="d-lg-none text-lg-left">The globe is always shown at the top of the page. This way it won't
-                  move depending on the length of the text description. The description (like this one that you are
-                  reading right now) is always at the bottom of the page. Between the globe and the description you will
+                  move depending on the length of the text description. The description is always at the bottom of the
+                  page. Between the globe and the description you will
                   often find some interactive sliders which change the look of the globe. This way the sliders are
                   always close to the globe wich makes it easier to change them on small displays like phones.</p>
                 <!-- desktop contents -->
@@ -90,15 +97,13 @@
                   transform method. Throughout the entire course you will see an interactive globe on the left side. You
                   can always rotate it and zoom in and out. Many of the exercises will allow you to display data on this
                   interactive globe. Please familiarise yourself with rotating and zooming.</p>
-                <p class="d-none d-lg-block text-lg-left">The globe is always shown at the top of the page. This way it
-                  won't move depending on the length of the text description. The description (like this one that you
-                  are reading right now) is always in the bottom right corner of the page. In the top right corner you
+                <p class="d-none d-lg-block text-lg-left">The globe is always shown on the left. The description is
+                  always in the bottom right corner of the page. In the top right corner you
                   will often find some interactive sliders which change the look of the globe.</p>
                 <!-- contents for all -->
-                <p>Throughout the course there will be a couple of quizes. Touching the right answer in your first
+                <p>Throughout the course there will be a couple of quizzes. Touching the right answer in your first
                   attempt will give you a point. The total number of points that you have achieved will be shown at the
-                  bottom of the page. The course starts by
-                  touching the start button below.</p>
+                  bottom of the page. Enough of these boring explanations. Let's start!</p>
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Start</button>
               </div>
               <div class="tab-pane fade" id="harmonics" role="tabpanel" aria-labelledby="harmonics-tab">
@@ -153,6 +158,8 @@
     var event = new Event('checkViewer');
     var currentCategory = 0;
     var pointSum = 0;
+    var failedSum = 0;
+    var maxPoints = 3;
     var answerText = document.getElementById("pointMessage");
     function currentPage() {
       var i, items = $('.nav-link');
@@ -229,19 +236,32 @@
     var oldthickness = -1;
     var zonalSlider = $("#zonalSlider").slider({ min: 0, max: 24, step: 1, value: 6, prefix: 'm=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
     var totalSlider = $("#totalSlider").slider({ min: 0, max: 24, step: 1, value: 9, prefix: 'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
-    var trcSlider = $("#trcSlider").slider({ min: 0, max: 11, step: 1, value: 0, prefix: 'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return idx2trc(val); }, onChange: function (val) { document.dispatchEvent(event); } });
+    var trcSlider = $("#trcSlider").slider({ min: 0, max: 11, step: 1, value: 8, prefix: 'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return idx2trc(val); }, onChange: function (val) { document.dispatchEvent(event); } });
     var overlaySlider = $("#overlaySlider").slider({ min: 0, max: 100, step: 1, value: 50, postfix: '%', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
     var harmonicsSliders = document.getElementById("harmonics-sliders");
     var truncationSlider = document.getElementById("truncation-slider");
     var optionsDiv = document.getElementById("optionsDiv");
     var optionsBtn = document.getElementById("optionsBtn");
+    var harmonicsCB = document.getElementById("harmonicsColorbarDiv");
+    var truncationCB = document.getElementById("truncationColorbarDiv");
+    var harmonicsCBB = document.getElementById("harmonicsColorbarBtn");
+    var truncationCBB = document.getElementById("truncationColorbarBtn");
+    function showColorbar() {
+      if (truncationCB.style.display == "none") {
+        truncationCB.style.display = "block";
+        truncationCBB.textContent = "hide colorbar";
+      } else {
+        truncationCB.style.display = "none";
+        truncationCBB.textContent = "show colorbar";
+      }
+    }
     function moreOptions() {
       if (optionsDiv.style.display == "none") {
         optionsDiv.style.display = "block";
-        optionsBtn.textContent = "hide options";
+        optionsBtn.textContent = "hide colorbar+options";
       } else {
         optionsDiv.style.display = "none";
-        optionsBtn.textContent = "show options";
+        optionsBtn.textContent = "show colorbar+options";
       }
       $(window).trigger('resize');
     }
@@ -249,7 +269,7 @@
       var answerDiv = document.getElementById(answerId);
       if (answerDiv.style.display == "none") {
         if (eval(answerId + " != 0") && eval(answerId + " != 1")) {
-          if (correct) pointSum += 1;
+          if (correct) { pointSum += 1; } else { failedSum += 1; }
           answerText.textContent = '' + pointSum + ' points';
           eval(answerId + " = 1;");
         } else {
