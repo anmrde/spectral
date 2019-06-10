@@ -95,24 +95,28 @@
                   are reading right now) is always in the bottom right corner of the page. In the top right corner you
                   will often find some interactive sliders which change the look of the globe.</p>
                 <!-- contents for all -->
-                <p>The course starts by
+                <p>Throughout the course there will be a couple of quizes. Touching the right answer in your first
+                  attempt will give you a point. The total number of points that you have achieved will be shown at the
+                  bottom of the page. The course starts by
                   touching the start button below.</p>
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Start</button>
               </div>
               <div class="tab-pane fade" id="harmonics" role="tabpanel" aria-labelledby="harmonics-tab">
                 <h2 class="mt-3">Spherical Harmonics</h2>
                 <p>The globe shows now the spherical harmonic functions. These are characterised by zonal wavenumber m
-                  and total wavenumber n. You can change m and n with the sliders above.</p>
+                  and total wavenumber n. You can change m and n with the sliders above. If you don't see sliders above
+                  please try using a different browser! (Firefox, Chrome and Safari should work on desktop and mobile
+                  devices)</p>
                 <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
               </div>
               <div class="tab-pane fade" id="harmonics-quiz1" role="tabpanel" aria-labelledby="harmonics-quiz1-tab">
                 <h2 class="mt-3">Quiz 1.1</h2>
                 <p>Here comes a question.</p>
-                <button class="btn btn-light text-left" onclick="showAnswer('quiz1.1')" id="optionsBtn"
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz1_1',true)" id="optionsBtn"
                   style="width: 100%">answer 1
                 </button>
-                <div id="quiz1.1" style="display: none">
+                <div id="quiz1_1" style="display: none">
                   <p>Here comes some explanation</p>
                 </div>
                 <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
@@ -139,7 +143,7 @@
               </div>
             </div>
           </div> <!-- /.container -->
-
+          <p id="pointMessage" class="mt-3" style="display: none">0 points</p>
         </div>
       </div>
     </div>
@@ -148,6 +152,8 @@
   <script type="text/javascript">
     var event = new Event('checkViewer');
     var currentCategory = 0;
+    var pointSum = 0;
+    var answerText = document.getElementById("pointMessage");
     function currentPage() {
       var i, items = $('.nav-link');
       for (i = 0; i < items.length; i++) {
@@ -180,6 +186,7 @@
           $(pane[i + 1]).addClass('show active');
           document.dispatchEvent(event);
           $(window).trigger('resize');
+          answerText.style.display = "block";
         }
       });
       // Prev
@@ -238,9 +245,16 @@
       }
       $(window).trigger('resize');
     }
-    function showAnswer(answerId) {
+    function showAnswer(answerId, correct) {
       var answerDiv = document.getElementById(answerId);
       if (answerDiv.style.display == "none") {
+        if (eval(answerId + " != 0") && eval(answerId + " != 1")) {
+          if (correct) pointSum += 1;
+          answerText.textContent = '' + pointSum + ' points';
+          eval(answerId + " = 1;");
+        } else {
+          eval(answerId + " = 0;");
+        }
         answerDiv.style.display = "block";
       } else {
         answerDiv.style.display = "none";
