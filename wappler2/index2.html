@@ -294,11 +294,12 @@
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
               </div>
               <div class="tab-pane fade" id="congrats" role="tabpanel" aria-labelledby="congrats-tab">
-                <h2 class="mt-3">Well done!</h2>
-                <p>Congratulations! You finished these exercises about the spectral transform method. Feel free to go
-                  back or take a look at the following recent paper which describes some of the computational challenges
-                  of the spectral transform method: <a href="https://doi.org/10.5194/gmd-2018-304">The ESCAPE
-                    project</a></p>
+                <h2 class="mt-3" id="resultHeader">Well done!</h2>
+                <p id="resultText">Congratulations! You finished these exercises about the spectral transform method.
+                </p>
+                <p>Feel free to go back or take a look at the following recent paper which describes some of the
+                  computational challenges of the spectral transform method: <a
+                    href="https://doi.org/10.5194/gmd-2018-304">The ESCAPE project paper</a></p>
                 <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
               </div>
             </div>
@@ -314,7 +315,7 @@
     var currentCategory = 0;
     var pointSum = 0;
     var failedSum = 0;
-    var maxPoints = 3;
+    var maxPoints = 5;
     var answerText = document.getElementById("pointMessage");
     function currentPage() {
       var i, items = $('.nav-link');
@@ -349,6 +350,23 @@
           document.dispatchEvent(event);
           $(window).trigger('resize');
           answerText.style.display = "block";
+          if (i + 2 == items.length) {
+            var resultText = document.getElementById("resultText");
+            var resultHeader = document.getElementById("resultHeader");
+            if (pointSum == 0 && failedSum == 0) {
+              resultHeader.innerHTML = "Seriously?";
+              resultText.innerHTML = "You didn't answer any of the quizzes. Are they not working? Please contact Andreas (andreas.mueller@ecmwf.int) to let him know that he needs to fix this page. Or go back and try again!";
+            } else if (pointSum == 0) {
+              resultHeader.innerHTML = "Seriously?";
+              resultText.innerHTML = "You didn't answer any of the quizzes correctly in your first attempt. Please reload the page to try again!";
+            } else if (pointSum < maxPoints) {
+              resultHeader.innerHTML = "Well done!";
+              resultText.innerHTML = "You answered " + pointSum + " questions out of 5 correctly in your first attempt. Why don't you reload the page and see if you remember the correct answers and can do better next time?";
+            } else if (pointSum == maxPoints) {
+              resultHeader.innerHTML = "Wow!";
+              resultText.innerHTML = "You answered all questions correctly in your first attempt! Great job!";
+            }
+          }
         }
       });
       // Prev
