@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Truncation</title>
+  <title>Spectral Transform Course</title>
   <script src="dmxAppConnect/dmxAppConnect.js"></script>
   <script src="js/jquery-3.3.1.slim.min.js"></script>
   <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.5.1.js"></script>
@@ -71,6 +71,10 @@
                   aria-controls="harmonics-quiz1" aria-selected="false">Quiz 1.1</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link cat1" id="harmonics-quiz2-tab" data-toggle="tab" href="#harmonics-quiz2" role="tab"
+                  aria-controls="harmonics-quiz2" aria-selected="false">Quiz 1.2</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link cat2" id="profile-tab" data-toggle="tab" href="#truncation" role="tab"
                   aria-controls="truncation" aria-selected="false">Truncation</a>
               </li>
@@ -108,21 +112,70 @@
               </div>
               <div class="tab-pane fade" id="harmonics" role="tabpanel" aria-labelledby="harmonics-tab">
                 <h2 class="mt-3">Spherical Harmonics</h2>
-                <p>The globe shows now the spherical harmonic functions. These are characterised by zonal wavenumber m
-                  and total wavenumber n. You can change m and n with the sliders above. If you don't see sliders above
-                  please try using a different browser! (Firefox, Chrome and Safari should work on desktop and mobile
-                  devices)</p>
+                <p>The idea of the spectral transform method is to represent fields (like wind speed and temperature) as
+                  a sum of so called spherical harmonic functions. The globe shows now one of these spherical harmonic
+                  functions. They are characterised by zonal wavenumber m and total wavenumber n. You can change m and n
+                  with the sliders above. If you don't see sliders above please try using a different browser! (Firefox,
+                  Chrome and Safari should work on desktop and mobile devices)</p>
                 <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
               </div>
               <div class="tab-pane fade" id="harmonics-quiz1" role="tabpanel" aria-labelledby="harmonics-quiz1-tab">
                 <h2 class="mt-3">Quiz 1.1</h2>
-                <p>Here comes a question.</p>
-                <button class="btn btn-light text-left" onclick="showAnswer('quiz1_1',true)" id="optionsBtn"
-                  style="width: 100%">answer 1
+                <p>What determines the number of minima and maxima between south pole and north pole (along a meridian)?
+                </p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz11a','quiz1_1',false)"
+                  style="width: 100%">zonal wavenumber m
                 </button>
-                <div id="quiz1_1" style="display: none">
-                  <p>Here comes some explanation</p>
+                <div id="quiz11a" style="display: none">
+                  <p>Nice try but unfortunately wrong. The zonal wavenumber m determines the number of minima and maxima
+                    along the equator. Please try one of the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz11b','quiz1_1',false)"
+                  style="width: 100%">total wavenumber n
+                </button>
+                <div id="quiz11b" style="display: none">
+                  <p>You are close. Changing total wavenumber n while keeping zonal wavenumber m constant does indeed
+                    change the number of minima and maxima along the meridian but they also change when you change m.
+                    This answer is unfortunately wrong. Check the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz11c','quiz1_1',true)"
+                  style="width: 100%">difference between n and m
+                </button>
+                <div id="quiz11c" style="display: none">
+                  <p>Correct! Keeping n=m gives you extrema only along the equator. Setting n=m+1 produces two rows of
+                    extrema and so forth. Feel free to click on the other answers to see the explanations why they are
+                    wrong!</p>
+                </div>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="harmonics-quiz2" role="tabpanel" aria-labelledby="harmonics-quiz2-tab">
+                <h2 class="mt-3">Quiz 1.2</h2>
+                <p>For which m and n greater than 0 do you get the largest regions of values close to zero? In which
+                  regions of the
+                  earth are those zeros? These are the key to the Fast Legendre Transform which rearranges the
+                  computations in such a way that we don't need to compute those zeros.</p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz12a','quiz1_2',true)"
+                  style="width: 100%">around the poles for large m and n close to m
+                </button>
+                <div id="quiz12a" style="display: none">
+                  <p>Correct! The largest m and n that you can choose with the sliders above is m=24 and n=24 and they
+                    give you large green regions around the poles! Great!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz12b','quiz1_2',false)"
+                  style="width: 100%">around the equator for large m and n close to m
+                </button>
+                <div id="quiz12b" style="display: none">
+                  <p>Are you sure? Zeros are shown on the globe with light green color. There isn't much green around
+                    the equator for m=24 and n=24 (which are the largest m and n for the sliders above). Try again!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz12c','quiz1_2',false)"
+                  style="width: 100%">m=1 and n=2 around middle Africa and to the south west of Hawaii
+                </button>
+                <div id="quiz12c" style="display: none">
+                  <p>There are lots of zeros in these regions but there are other values of m and n with larger regions.
+                    Try again!</p>
                 </div>
                 <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
@@ -265,19 +318,19 @@
       }
       $(window).trigger('resize');
     }
-    function showAnswer(answerId, correct) {
-      var answerDiv = document.getElementById(answerId);
-      if (answerDiv.style.display == "none") {
-        if (eval(answerId + " != 0") && eval(answerId + " != 1")) {
+    function showAnswer(divId, answerId, correct) {
+      var divObject = document.getElementById(divId);
+      if (divObject.style.display == "none") {
+        if (eval("typeof " + answerId + " == 'undefined'")) {
           if (correct) { pointSum += 1; } else { failedSum += 1; }
           answerText.textContent = '' + pointSum + ' points';
           eval(answerId + " = 1;");
         } else {
           eval(answerId + " = 0;");
         }
-        answerDiv.style.display = "block";
+        divObject.style.display = "block";
       } else {
-        answerDiv.style.display = "none";
+        divObject.style.display = "none";
       }
     }
     // Sketchfab Viewer API: Change Texture/material
