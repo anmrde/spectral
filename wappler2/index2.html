@@ -79,6 +79,18 @@
                   aria-controls="truncation" aria-selected="false">Truncation</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link cat2" id="truncation-quiz1-tab" data-toggle="tab" href="#truncation-quiz1" role="tab"
+                  aria-controls="truncation-quiz1" aria-selected="false">Quiz 2.1</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat2" id="truncation-quiz2-tab" data-toggle="tab" href="#truncation-quiz2" role="tab"
+                  aria-controls="truncation-quiz2" aria-selected="false">Quiz 2.2</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat2" id="truncation-quiz3-tab" data-toggle="tab" href="#truncation-quiz3" role="tab"
+                  aria-controls="truncation-quiz3" aria-selected="false">Quiz 2.3</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link cat0" id="contact-tab" data-toggle="tab" href="#congrats" role="tab"
                   aria-controls="congrats" aria-selected="false">Well done!</a>
               </li>
@@ -188,6 +200,96 @@
                   to change the truncation of this spectral field. Which truncation is necessary to recognise the your
                   home continent?</p>
 
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="truncation-quiz1" role="tabpanel" aria-labelledby="truncation-quiz1-tab">
+                <h2 class="mt-3">Quiz 2.1</h2>
+                <p>The purpose of this quiz is to demonstrate that the spectral representation of a field up to
+                  truncation T is just a weighted sum of all spherical harmonics with wavenumbers smaller or equal to T.
+                  How many minima do you see for T2 and which spherical harmonics have the same number of minima? You
+                  can go back two slides and compare with the spherical harmonics!
+                </p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz21a','quiz2_1',false)"
+                  style="width: 100%">one minimum, like m=1 and n=1
+                </button>
+                <div id="quiz21a" style="display: none">
+                  <p>Did you really check T2? There should be more than one minimum! Try one of the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz21b','quiz2_1',true)"
+                  style="width: 100%">two minima, like m=1,n=2 and m=2,n=2
+                </button>
+                <div id="quiz21b" style="display: none">
+                  <p>That's right! T2 has two minima because it uses spherical harmonics up to wavenumbers 2 which
+                    includes m=1,n=2 and m=2,n=2.</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz21c','quiz2_1',false)"
+                  style="width: 100%">two minima, like m=2 and n=1
+                </button>
+                <div id="quiz21c" style="display: none">
+                  <p>Sorry! The zonal wavenumber m always needs to be smaller or equal than the total wavenumber! Try
+                    one of the other answers!</p>
+                </div>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="truncation-quiz2" role="tabpanel" aria-labelledby="truncation-quiz2-tab">
+                <h2 class="mt-3">Quiz 2.2</h2>
+                <p>Take a look at T639: in which of these three regions do you see the largest errors when comparing it
+                  with T1279?
+                </p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz22a','quiz2_2',false)"
+                  style="width: 100%">Saharah
+                </button>
+                <div id="quiz22a" style="display: none">
+                  <p>That's wrong. The Saharah is pretty flat and for that reason easy to represent by the spectral
+                    field. Try one of the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz22b','quiz2_2',false)"
+                  style="width: 100%">middle of Greenland
+                </button>
+                <div id="quiz22b" style="display: none">
+                  <p>Wrong! The middle of Greenland is covered by ice which is included in our orography data. Due to
+                    the ice Greenland is relatively flat in our model and easy to represent with spectral fields. Try
+                    one of the other answers.</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz22c','quiz2_2',true)"
+                  style="width: 100%">Pacific Ocean along west coast of South America
+                </button>
+                <div id="quiz22c" style="display: none">
+                  <p>Correct! The spectral method produces quite a lot of oscillations close to steep gradients. For the
+                    orography the steepest gradients can be found when tall mountains like the Andes or the Himalaya are
+                    next to the ocean.</p>
+                </div>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="truncation-quiz3" role="tabpanel" aria-labelledby="truncation-quiz3-tab">
+                <h2 class="mt-3">Quiz 2.3</h2>
+                <p>Why are parts of the land in the East of England and in the Netherlands blue at T1279? Hint: take a
+                  look at the colorbar!
+                </p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz23a','quiz2_3',true)"
+                  style="width: 100%">orography up to about 20m height is shown blue
+                </button>
+                <div id="quiz23a" style="display: none">
+                  <p>Correct! The blue color tries to make it look like water but it is actually just low elevation.
+                    Land with low elevation is shown in blue as well. Great job!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz23b','quiz2_3',false)"
+                  style="width: 100%">T1279 is not enough to show it correctly
+                </button>
+                <div id="quiz23b" style="display: none">
+                  <p>Sounds reasonable but no matter how high the truncation would be the picture wouldn't change much
+                    in this case. Please try one of the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz23c','quiz2_3',false)"
+                  style="width: 100%">the plot shows a forecast of the sea level in 2100
+                </button>
+                <div id="quiz23c" style="display: none">
+                  <p>Hopefully not. No, this plot uses the orography that IFS is currently using in operations. Try one
+                    of the other answers!</p>
+                </div>
                 <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
                 <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
               </div>
