@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en-GB">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Spectral Transform Course</title>
+  <script src="dmxAppConnect/dmxAppConnect.js"></script>
+  <script src="js/jquery-3.3.1.slim.min.js"></script>
+  <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.5.1.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="css/jquery.slider.css" rel="stylesheet">
+  <script src="js/jquery.slider.js"></script>
+  <script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
+  <script src="dmxAppConnect/dmxBootstrap4Collapse/dmxBootstrap4Collapse.js" defer=""></script>
+</head>
+
+<body is="dmx-app" id="index">
+  <div class="container wappler-block">
+    <div class="row">
+      <div class="col-12 col-xl col-lg col-md-12 col-sm-12 col-xl-9">
+        <div class="ratio-square">
+          <!-- left column: Sketchfab viewer -->
+          <iframe class="ratio-inner" id="api-frame" allow="autoplay; fullscreen; vr" allowvr="" allowfullscreen=""
+            mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+        </div>
+      </div>
+      <div class="col-12 align-self-xl-end align-self-md-start align-self-lg-end col-lg-3 col-md-12 col-sm-12 col-xl-3">
+        <div>
+          <div id="harmonics-sliders" style="display: none">
+            <h3 class="mt-3 d-none d-lg-block text-lg-left">Sliders</h3>
+            <input id="zonalSlider">
+            <input id="totalSlider">
+            <button class="btn text-sm-center btn-light mt-n2 mt-n3" onclick="moreOptions()" id="optionsBtn">show
+              colorbar+options
+            </button>
+            <div id="optionsDiv" style="display: none">
+              <div id="harmonicsColorbarDiv" style="text-align: center">
+                <img src="harmonics/colorbar.png">​
+              </div>
+              <p class="mt-3 mb-n2">Visibility of land overlay:</p>
+              <input id="overlaySlider">
+            </div>
+          </div>
+          <div id="truncation-slider" style="display: none">
+            <h3 class="mt-3 d-none d-lg-block text-lg-left">Slider</h3>
+            <input id="trcSlider">
+            <button class="btn text-sm-center btn-light mt-n2 mt-n3" onclick="showColorbar()" id="truncationColorbarBtn"
+              style="display: block">show colorbar
+            </button>
+            <div id="truncationColorbarDiv" style="display: none;text-align: center">
+              <img src="orography/greenAt60m/colorbar.png">​
+            </div>
+          </div>
+          <div class="container text-sm-left pl-0 pr-0">
+            <ul class="nav nav-tabs" id="myTab" role="tablist" style="display: none;">
+              <li class="nav-item">
+                <a class="nav-link active cat0" id="home-tab" data-toggle="tab" href="#welcome" role="tab"
+                  aria-controls="welcome" aria-selected="true">Welcome</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat1" id="harmonics-tab" data-toggle="tab" href="#harmonics" role="tab"
+                  aria-controls="harmonics" aria-selected="false">Spherical Harmonics</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat1" id="harmonics-quiz1-tab" data-toggle="tab" href="#harmonics-quiz1" role="tab"
+                  aria-controls="harmonics-quiz1" aria-selected="false">Quiz 1.1</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat1" id="harmonics-quiz2-tab" data-toggle="tab" href="#harmonics-quiz2" role="tab"
+                  aria-controls="harmonics-quiz2" aria-selected="false">Quiz 1.2</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat2" id="profile-tab" data-toggle="tab" href="#truncation" role="tab"
+                  aria-controls="truncation" aria-selected="false">Truncation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat2" id="truncation-quiz1-tab" data-toggle="tab" href="#truncation-quiz1" role="tab"
+                  aria-controls="truncation-quiz1" aria-selected="false">Quiz 2.1</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat2" id="truncation-quiz2-tab" data-toggle="tab" href="#truncation-quiz2" role="tab"
+                  aria-controls="truncation-quiz2" aria-selected="false">Quiz 2.2</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat2" id="truncation-quiz3-tab" data-toggle="tab" href="#truncation-quiz3" role="tab"
+                  aria-controls="truncation-quiz3" aria-selected="false">Quiz 2.3</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link cat0" id="contact-tab" data-toggle="tab" href="#congrats" role="tab"
+                  aria-controls="congrats" aria-selected="false">Well done!</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="welcome" role="tabpanel" aria-labelledby="welcome-tab">
+                <h2 class="mt-3">Welcome!</h2>
+                <!-- mobile contents -->
+                <p class="d-lg-none text-lg-left">This is a short interactive training about the spectral transform
+                  method. Throughout the entire course you will see above an interactive globe. You can always rotate it
+                  and zoom in and out. Many of the exercises will allow you to display data on this interactive globe.
+                  Please familiarise yourself with rotating and zooming.</p>
+                <p class="d-lg-none text-lg-left">The globe is always shown at the top of the page. This way it won't
+                  move depending on the length of the text description. The description is always at the bottom of the
+                  page. Between the globe and the description you will
+                  often find some interactive sliders which change the look of the globe. This way the sliders are
+                  always close to the globe wich makes it easier to change them on small displays like phones.</p>
+                <!-- desktop contents -->
+                <p class="d-none d-lg-block text-lg-left">This is a short interactive training about the spectral
+                  transform method. Throughout the entire course you will see an interactive globe on the left side. You
+                  can always rotate it and zoom in and out. Many of the exercises will allow you to display data on this
+                  interactive globe. Please familiarise yourself with rotating and zooming.</p>
+                <p class="d-none d-lg-block text-lg-left">The globe is always shown on the left. The description is
+                  always in the bottom right corner of the page. In the top right corner you
+                  will often find some interactive sliders which change the look of the globe.</p>
+                <!-- contents for all -->
+                <p>Throughout the course there will be a couple of quizzes. Touching the right answer in your first
+                  attempt will give you a point. The total number of points that you have achieved will be shown at the
+                  bottom of the page. Enough of these boring explanations. Let's start!</p>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Start</button>
+              </div>
+              <div class="tab-pane fade" id="harmonics" role="tabpanel" aria-labelledby="harmonics-tab">
+                <h2 class="mt-3">Spherical Harmonics</h2>
+                <p>The idea of the spectral transform method is to represent fields (like wind speed and temperature) as
+                  a sum of so called spherical harmonic functions. The globe shows now one of these spherical harmonic
+                  functions. They are characterised by zonal wavenumber m and total wavenumber n. You can change m and n
+                  with the sliders above. If you don't see sliders above please try using a different browser! (Firefox,
+                  Chrome and Safari should work on desktop and mobile devices)</p>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="harmonics-quiz1" role="tabpanel" aria-labelledby="harmonics-quiz1-tab">
+                <h2 class="mt-3">Quiz 1.1</h2>
+                <p>What determines the number of minima and maxima between south pole and north pole (along a meridian)?
+                </p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz11a','quiz1_1',false)"
+                  style="width: 100%">zonal wavenumber m
+                </button>
+                <div id="quiz11a" style="display: none">
+                  <p>Nice try but unfortunately wrong. The zonal wavenumber m determines the number of minima and maxima
+                    along the equator. Please try one of the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz11b','quiz1_1',false)"
+                  style="width: 100%">total wavenumber n
+                </button>
+                <div id="quiz11b" style="display: none">
+                  <p>You are close. Changing total wavenumber n while keeping zonal wavenumber m constant does indeed
+                    change the number of minima and maxima along the meridian but they also change when you change m.
+                    This answer is unfortunately wrong. Check the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz11c','quiz1_1',true)"
+                  style="width: 100%">difference between n and m
+                </button>
+                <div id="quiz11c" style="display: none">
+                  <p>Correct! Keeping n=m gives you extrema only along the equator. Setting n=m+1 produces two rows of
+                    extrema and so forth. Feel free to click on the other answers to see the explanations why they are
+                    wrong!</p>
+                </div>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="harmonics-quiz2" role="tabpanel" aria-labelledby="harmonics-quiz2-tab">
+                <h2 class="mt-3">Quiz 1.2</h2>
+                <p>For which m and n greater than 0 do you get the largest regions of values close to zero? In which
+                  regions of the
+                  earth are those zeros? These are the key to the Fast Legendre Transform which rearranges the
+                  computations in such a way that we don't need to compute those zeros.</p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz12a','quiz1_2',true)"
+                  style="width: 100%">around the poles for large m and n close to m
+                </button>
+                <div id="quiz12a" style="display: none">
+                  <p>Correct! The largest m and n that you can choose with the sliders above is m=50 and n=50 and they
+                    give you large green regions around the poles! Great!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz12b','quiz1_2',false)"
+                  style="width: 100%">around the equator for large m and n close to m
+                </button>
+                <div id="quiz12b" style="display: none">
+                  <p>Are you sure? Zeros are shown on the globe with light green color. There isn't much green around
+                    the equator for m=50 and n=50 (which are the largest m and n for the sliders above). Try again!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz12c','quiz1_2',false)"
+                  style="width: 100%">m=1 and n=2 around middle Africa and to the south west of Hawaii
+                </button>
+                <div id="quiz12c" style="display: none">
+                  <p>There are lots of zeros in these regions but there are other values of m and n with larger regions.
+                    Try again!</p>
+                </div>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="truncation" role="tabpanel" aria-labelledby="truncation-tab">
+                <h2 class="mt-3">Truncation</h2>
+                <p>The truncation is the highest zonal or total wavenumber that we use. To demonstrate the impact of
+                  truncation on a familiar field the globe shows now the orography (height above sea level). This
+                  orography was obtained from the spectral field used operationally in IFS. The slider above allows you
+                  to change the truncation of this spectral field. Which truncation is necessary to recognise your
+                  home continent?</p>
+
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="truncation-quiz1" role="tabpanel" aria-labelledby="truncation-quiz1-tab">
+                <h2 class="mt-3">Quiz 2.1</h2>
+                <p>The purpose of this quiz is to demonstrate that the spectral representation of a field up to
+                  truncation T is just a weighted sum of all spherical harmonics with wavenumbers smaller or equal to T.
+                  How many minima do you see for T2 and which spherical harmonics have the same number of minima? You
+                  can go back two slides and compare with the spherical harmonics!
+                </p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz21a','quiz2_1',false)"
+                  style="width: 100%">one minimum, like m=1 and n=1
+                </button>
+                <div id="quiz21a" style="display: none">
+                  <p>Did you really check T2? There should be more than one minimum! Try one of the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz21b','quiz2_1',true)"
+                  style="width: 100%">two minima, like m=1,n=2 and m=2,n=2
+                </button>
+                <div id="quiz21b" style="display: none">
+                  <p>That's right! T2 has two minima because it uses spherical harmonics up to wavenumbers 2 which
+                    includes m=1,n=2 and m=2,n=2.</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz21c','quiz2_1',false)"
+                  style="width: 100%">two minima, like m=2 and n=1
+                </button>
+                <div id="quiz21c" style="display: none">
+                  <p>Sorry! The zonal wavenumber m always needs to be smaller or equal than the total wavenumber! Try
+                    one of the other answers!</p>
+                </div>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="truncation-quiz2" role="tabpanel" aria-labelledby="truncation-quiz2-tab">
+                <h2 class="mt-3">Quiz 2.2</h2>
+                <p>Take a look at T639: in which of these three regions do you see the largest errors when comparing it
+                  with T1279?
+                </p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz22a','quiz2_2',false)"
+                  style="width: 100%">Sahara
+                </button>
+                <div id="quiz22a" style="display: none">
+                  <p>That's wrong. The Sahara is pretty flat and for that reason easy to represent by the spectral
+                    field. Try one of the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz22b','quiz2_2',false)"
+                  style="width: 100%">middle of Greenland
+                </button>
+                <div id="quiz22b" style="display: none">
+                  <p>Wrong! The middle of Greenland is covered by ice which is included in our orography data. Due to
+                    the ice Greenland is relatively flat in our model and easy to represent with spectral fields. Try
+                    one of the other answers.</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz22c','quiz2_2',true)"
+                  style="width: 100%">Pacific Ocean along west coast of South America
+                </button>
+                <div id="quiz22c" style="display: none">
+                  <p>Correct! The spectral method produces quite a lot of oscillations close to steep gradients. For the
+                    orography the steepest gradients can be found when tall mountains like the Andes or the Himalaya are
+                    next to the ocean.</p>
+                </div>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="truncation-quiz3" role="tabpanel" aria-labelledby="truncation-quiz3-tab">
+                <h2 class="mt-3">Quiz 2.3</h2>
+                <p>Why are parts of the land in the East of England and in the Netherlands blue at T1279? Hint: take a
+                  look at the colorbar!
+                </p>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz23a','quiz2_3',true)"
+                  style="width: 100%">orography up to about 20m height is shown blue
+                </button>
+                <div id="quiz23a" style="display: none">
+                  <p>Correct! The blue color tries to make it look like water but it is actually just low elevation.
+                    Land with low elevation is shown in blue as well. Great job!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz23b','quiz2_3',false)"
+                  style="width: 100%">T1279 is not enough to show it correctly
+                </button>
+                <div id="quiz23b" style="display: none">
+                  <p>Sounds reasonable but no matter how high the truncation would be the picture wouldn't change much
+                    in this case. Please try one of the other answers!</p>
+                </div>
+                <button class="btn btn-light text-left" onclick="showAnswer('quiz23c','quiz2_3',false)"
+                  style="width: 100%">the plot shows a forecast of the sea level in 2100
+                </button>
+                <div id="quiz23c" style="display: none">
+                  <p>Hopefully not. No, this plot uses the orography that IFS is currently using in operations. Try one
+                    of the other answers!</p>
+                </div>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+                <button class="nexttab btn text-sm-center btn-space" style="background-color:#bbe8e8">Next</button>
+              </div>
+              <div class="tab-pane fade" id="congrats" role="tabpanel" aria-labelledby="congrats-tab">
+                <h2 class="mt-3" id="resultHeader">Well done!</h2>
+                <p id="resultText">Congratulations! You finished these exercises about the spectral transform method.
+                </p>
+                <p>If you want to learn more about the spectral transform you could take a look at the following recent
+                  paper which describes some of the computational challenges of the spectral transform method: <a
+                    href="https://doi.org/10.5194/gmd-2018-304">The ESCAPE project paper</a></p>
+                <button class="prevtab btn btn-space" style="background-color:#fff2a0">Prev</button>
+              </div>
+            </div>
+          </div> <!-- /.container -->
+          <p id="pointMessage" class="mt-3" style="display: none">0 points</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Initialize the viewer -->
+  <script type="text/javascript">
+    var event = new Event('checkViewer');
+    var currentCategory = 0;
+    var pointSum = 0;
+    var failedSum = 0;
+    var maxPoints = 5;
+    var answerText = document.getElementById("pointMessage");
+    function currentPage() {
+      var i, items = $('.nav-link');
+      for (i = 0; i < items.length; i++) {
+        if ($(items[i]).hasClass('active') == true) {
+          break;
+        }
+      }
+      return i;
+    }
+    /* -------------------------------------------------------------
+          bootstrapTabControl
+      ------------------------------------------------------------- */
+    function updateCategory(tab) {
+      if (tab.hasClass('cat0')) currentCategory = 0;
+      if (tab.hasClass('cat1')) currentCategory = 1;
+      if (tab.hasClass('cat2')) currentCategory = 2;
+    }
+    function bootstrapTabControl() {
+      var i, items = $('.nav-link'), pane = $('.tab-pane');
+      // next
+      $('.nexttab').on('click', function () {
+        i = currentPage();
+        if (i < items.length - 1) {
+          // for tab
+          $(items[i]).removeClass('active');
+          $(items[i + 1]).addClass('active');
+          updateCategory($(items[i + 1]));
+          // for pane
+          $(pane[i]).removeClass('show active');
+          $(pane[i + 1]).addClass('show active');
+          document.dispatchEvent(event);
+          $(window).trigger('resize');
+          answerText.style.display = "block";
+          if (i + 2 == items.length) {
+            var resultText = document.getElementById("resultText");
+            var resultHeader = document.getElementById("resultHeader");
+            if (pointSum == 0 && failedSum == 0) {
+              resultHeader.innerHTML = "Seriously?";
+              resultText.innerHTML = "You didn't answer any of the quizzes. Are they not working? Please contact Andreas (andreas.mueller@ecmwf.int) to let him know that he needs to fix this page. Or go back and try again!";
+            } else if (pointSum == 0) {
+              resultHeader.innerHTML = "Seriously?";
+              resultText.innerHTML = "You didn't answer any of the quizzes correctly in your first attempt. Please reload the page to try again!";
+            } else if (pointSum < maxPoints) {
+              resultHeader.innerHTML = "Well done!";
+              resultText.innerHTML = "You answered " + pointSum + " questions out of 5 correctly in your first attempt. Why don't you reload the page and see if you remember the correct answers and can do better next time?";
+            } else if (pointSum == maxPoints) {
+              resultHeader.innerHTML = "Wow!";
+              resultText.innerHTML = "You answered all questions correctly in your first attempt! Great job!";
+            }
+          }
+        }
+      });
+      // Prev
+      $('.prevtab').on('click', function () {
+        i = currentPage();
+        if (i != 0) {
+          // for tab
+          $(items[i]).removeClass('active');
+          $(items[i - 1]).addClass('active');
+          updateCategory($(items[i - 1]));
+          // for pane
+          $(pane[i]).removeClass('show active');
+          $(pane[i - 1]).addClass('show active');
+          document.dispatchEvent(event);
+        }
+      });
+    }
+    bootstrapTabControl();
+    function idx2trc(idx) {
+      var trc = 0;
+      if (idx == 0) {
+        trc = 0;
+      } else if (idx < 8) {
+        trc = Math.pow(2, (idx - 1));
+      } else if (idx == 8) {
+        trc = 159;
+      } else if (idx == 9) {
+        trc = 399;
+      } else if (idx == 10) {
+        trc = 639;
+      } else if (idx == 11) {
+        trc = 1279;
+      }
+      return trc;
+    }
+    var oldcategory = -1;
+    var oldtrc = -1;
+    var oldm = -1;
+    var oldn = -1;
+    var oldthickness = -1;
+    var zonalSlider = $("#zonalSlider").slider({ min: 0, max: 50, step: 1, value: 6, prefix: 'm=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#ffdd00', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
+    var totalSlider = $("#totalSlider").slider({ min: 0, max: 50, step: 1, value: 9, prefix: 'n=', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
+    var trcSlider = $("#trcSlider").slider({ min: 0, max: 11, step: 1, value: 8, prefix: 'T', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return idx2trc(val); }, onChange: function (val) { document.dispatchEvent(event); } });
+    var overlaySlider = $("#overlaySlider").slider({ min: 0, max: 100, step: 1, value: 50, postfix: '%', thumbScale: 0.5, bubbleFontScale: 0.7, thumbColor: '#6ccccc', bubbleFormat: function (val) { return val; }, onChange: function (val) { document.dispatchEvent(event); } });
+    var harmonicsSliders = document.getElementById("harmonics-sliders");
+    var truncationSlider = document.getElementById("truncation-slider");
+    var optionsDiv = document.getElementById("optionsDiv");
+    var optionsBtn = document.getElementById("optionsBtn");
+    var harmonicsCB = document.getElementById("harmonicsColorbarDiv");
+    var truncationCB = document.getElementById("truncationColorbarDiv");
+    var harmonicsCBB = document.getElementById("harmonicsColorbarBtn");
+    var truncationCBB = document.getElementById("truncationColorbarBtn");
+    function showColorbar() {
+      if (truncationCB.style.display == "none") {
+        truncationCB.style.display = "block";
+        truncationCBB.textContent = "hide colorbar";
+      } else {
+        truncationCB.style.display = "none";
+        truncationCBB.textContent = "show colorbar";
+      }
+    }
+    function moreOptions() {
+      if (optionsDiv.style.display == "none") {
+        optionsDiv.style.display = "block";
+        optionsBtn.textContent = "hide colorbar+options";
+      } else {
+        optionsDiv.style.display = "none";
+        optionsBtn.textContent = "show colorbar+options";
+      }
+      $(window).trigger('resize');
+    }
+    function showAnswer(divId, answerId, correct) {
+      var divObject = document.getElementById(divId);
+      if (divObject.style.display == "none") {
+        if (eval("typeof " + answerId + " == 'undefined'")) {
+          if (correct) { pointSum += 1; } else { failedSum += 1; }
+          answerText.textContent = '' + pointSum + ' points';
+          eval(answerId + " = 1;");
+        } else {
+          eval(answerId + " = 0;");
+        }
+        divObject.style.display = "block";
+      } else {
+        divObject.style.display = "none";
+      }
+    }
+    // Sketchfab Viewer API: Change Texture/material
+    var uid = '928a81dbfcbc4944a5ecac27f820c6ca';//'fb43aced2ee14e1db1f4acb7638d352e';
+    var iframe = document.getElementById('api-frame');
+    var client = new window.Sketchfab(iframe);
+    var myMaterials;
+    var error = function () {
+      console.error('Sketchfab API error');
+    };
+    var success = function (api) {
+      api.start(function () {
+        api.addEventListener('viewerready', function () {
+          api.getMaterialList(function (err, materials) {
+            myMaterials = materials;
+            console.log(myMaterials);
+          });
+          api.getTextureList(function (err, textures) {
+            console.log(textures);
+          });
+          function updateTexture() {
+            console.log('started updateTexture');
+            var page = currentPage();
+            var trc = idx2trc(trcSlider.value);
+            var m = zonalSlider.value;
+            var n = totalSlider.value;
+            var thickness = overlaySlider.value;
+            if (currentCategory != oldcategory || trc != oldtrc || m != oldm || n != oldn || thickness != oldthickness) {
+              console.log('something has changed! page=' + page + ' trc=' + trc + ' m=' + m + ' n=' + n + ' c=' + currentCategory);
+              var url = 'https://anmrde.github.io/spectral/';
+              var file = '';
+              var fileOcean = 'white.png';
+              var fileOverlay = 'black.png';
+              var changed = false;
+              if (currentCategory == 0) {
+                // satellite image
+                harmonicsSliders.style.display = "none";
+                truncationSlider.style.display = "none";
+                file = 'satellite/albedoWithCloudsSmall.jpg';
+                fileOcean = 'satellite/oceanMaskWithClouds.jpg';
+                changed = (currentCategory != oldcategory);
+              } else if (currentCategory == 1) {
+                // spherical harmonics
+                harmonicsSliders.style.display = "block";
+                truncationSlider.style.display = "none";
+                var mp = m;
+                var np = n;
+                file = 'harmonics/m' + mp + 'n' + np + '.png';
+                fileOverlay = 'harmonics/oceanT1279.png';
+                changed = (currentCategory != oldcategory || m != oldm || n != oldn || thickness != oldthickness);
+              } else if (currentCategory == 2) {
+                // orography truncation
+                harmonicsSliders.style.display = "none";
+                truncationSlider.style.display = "block";
+                file = 'orography/greenAt60m/T' + trc + '.png';
+                fileOcean = 'orography/greenAt60m/oceanT' + trc + '.png';
+                changed = (currentCategory != oldcategory || trc != oldtrc);
+              }
+              if (changed && file != '' && url != '') {
+                console.log('got to do something! url=' + url + ' file=' + file);
+                if (currentCategory == 1) {
+                  zonalSlider.max = totalSlider.value;
+                  totalSlider.min = zonalSlider.value;
+                }
+                $(window).trigger('resize');
+                for (var i = 0; i < myMaterials.length; i++) {
+                  var mat = myMaterials[i];
+                  if (mat.name == 'earth') {
+                    api.updateTexture(url + file, mat.channels.DiffusePBR.texture.uid, function (/*e, uid*/) { });
+                    api.updateTexture(url + fileOcean, mat.channels.SpecularPBR.texture.uid, function (/*e, uid*/) { });
+                    if (currentCategory == 1) {
+                      if (overlaySlider.value == 0) { mat.channels.ClearCoat.enable = false; } else { mat.channels.ClearCoat.enable = true; }
+                      mat.channels.ClearCoat.thickness = overlaySlider.value / 5.0;
+                      if (currentCategory != oldcategory) api.updateTexture(url + fileOverlay, mat.channels.ClearCoat.texture.uid, function (/*e, uid*/) { });
+                    } else {
+                      mat.channels.ClearCoat.enable = false;
+                    }
+                    api.setMaterial(mat);
+                  }
+                }
+              }
+              oldcategory = currentCategory;
+              oldtrc = trc;
+              oldm = m;
+              oldn = n;
+              oldthickness = thickness;
+            }
+          }
+
+          document.addEventListener('checkViewer', function () {
+            updateTexture();
+          });
+        });
+      });
+    };
+    client.init(uid, {
+      success: success,
+      error: error,
+      autostart: 1,
+      preload: 1,
+      ui_infos: 0,
+      camera: 0,
+      ui_inspector: 0
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
