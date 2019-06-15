@@ -311,7 +311,13 @@
   </div>
   <!-- Initialize the viewer -->
   <script type="text/javascript">
-    var event = new Event('checkViewer');
+    var event;
+    if (typeof (Event) === 'function') {
+      event = new Event('checkViewer');
+    } else {
+      event = document.createEvent('Event');
+      event.initEvent('checkViewer', true, true);
+    }
     var currentCategory = 0;
     var pointSum = 0;
     var failedSum = 0;
